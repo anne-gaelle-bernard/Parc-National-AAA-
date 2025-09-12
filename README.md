@@ -1,4 +1,4 @@
-# Parc National - Marseille <3
+# Parc National - Marseille 
 
 ## Introduction
 
