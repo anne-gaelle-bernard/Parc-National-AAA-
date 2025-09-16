@@ -67,22 +67,22 @@ document.getElementById('btn-login-submit').addEventListener('click', () => {
   const email = document.getElementById('login-email').value;
   const password = document.getElementById('login-password').value;
 
-  fetch('http://localhost/Parc-National-AAA-/Backend/api/login.php', {
+  fetch('http://localhost/Parc-National-AAA-/Backend/src/routes/authRoutes.php?action=login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password })
   })
     .then(res => res.json())
     .then(data => {
-  if (data.status === 'success') {
-    isLoggedIn = true;
-    userData = data.user;
-    modalLogin.classList.add('hidden');
-    showToast(`Bienvenue ${userData.first_name} 👋`, "success");
-  } else {
-    showToast(data.message, "error");
-  }
-});
+      if (data.success) {
+        isLoggedIn = true;
+        userData = data.user;
+        modalLogin.classList.add('hidden');
+  showToast(`Bienvenue ${userData.first_name} 👋`, "success");
+      } else {
+        showToast(data.message, "error");
+      }
+    });
 
 });
 
@@ -93,11 +93,11 @@ document.getElementById('btn-register-submit').addEventListener('click', () => {
   const firstName = document.getElementById('register-first-name').value;
   const lastName = document.getElementById('register-last-name').value;
 
-  fetch('http://localhost/Parc-National-AAA-/Backend/api/register.php', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ email, password, first_name: firstName, last_name: lastName })
-})
+  fetch('http://localhost/Parc-National-AAA-/Backend/src/routes/authRoutes.php?action=register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password, firstName, lastName })
+  })
   .then(async res => {
     const text = await res.text();
     console.log("Réponse brute :", text);  // <--- ajoute ça
@@ -109,23 +109,20 @@ document.getElementById('btn-register-submit').addEventListener('click', () => {
     }
   })
   .then(data => {
-  if (data.status === 'success') {
-    showToast(data.message, "success");
-
-    modalRegister.classList.add('hidden');
-    modalLogin.classList.remove('hidden');
-    showToast("Inscription réussie ! Connectez-vous 👌", "success");
-
-    // vider le formulaire
-    document.getElementById('register-email').value = "";
-    document.getElementById('register-password').value = "";
-    document.getElementById('register-first-name').value = "";
-    document.getElementById('register-last-name').value = "";
-
-  } else {
-    showMessage("register-message", data.message, "error");
-  }
-});
+    if (data.success) {
+      showToast(data.message, "success");
+      modalRegister.classList.add('hidden');
+      modalLogin.classList.remove('hidden');
+      showToast("Inscription réussie ! Connectez-vous 👌", "success");
+      // vider le formulaire
+      document.getElementById('register-email').value = "";
+      document.getElementById('register-password').value = "";
+      document.getElementById('register-first-name').value = "";
+      document.getElementById('register-last-name').value = "";
+    } else {
+      showToast(data.message, "error");
+    }
+  });
 
 
 });

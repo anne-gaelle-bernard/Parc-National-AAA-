@@ -1,0 +1,14 @@
+{
+  "project": "Parc National AAA",
+  "version": "1.0.0",
+  "database": {
+    "host": "localhost",
+    "user": "root",
+    "password": "",
+    "name": "parc_national"
+  },
+  "api": {
+    "login": "/Backend/src/routes/authRoutes.php?action=login",
+    "register": "/Backend/src/routes/authRoutes.php?action=register"
+  }
+}
