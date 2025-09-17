@@ -1,46 +1,8 @@
+#map {
+  height: 500px;
+  margin: 20px 0;
+}
 
-
-    #map { height: 500px; margin: 20px; border-radius: 12px; }
-    .form-sentier { margin: 20px; padding: 15px; background:#f7f7f7; border-radius:10px; }
-    .form-sentier input, .form-sentier textarea { display:block; margin:5px 0; width:100%; padding:8px; }
-    .form-sentier button { padding:8px 12px; background:#2a7d2e; color:#fff; border:none; border-radius:5px; cursor:pointer; }
-
-    /* Par défaut cacher la section carte */
-    #sentiers-section { display: none; padding-top: 80px; } /* pousse sous la navbar */
-
-    /* Ajustement du bouton retour */
-    #btn-back-home { 
-      margin:20px; 
-      padding:8px 25px; 
-      background:#444; 
-      color:#fff; 
-      border:none; 
-      border-radius:5px; 
-      cursor:pointer; 
-    }
-
-    /* Ajustement du titre */
-    #sentiers-section h2 {
-      margin-left:20px; 
-      margin-top: 15px;
-    }
-
-    /* Header fixé en haut */
-    .header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 60px; /* fixe la hauteur */
-      background: white;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 15px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    body {
-      margin: 0;
-    }
+.hidden {
+  display: none;
+}

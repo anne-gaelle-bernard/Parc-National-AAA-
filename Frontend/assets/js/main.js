@@ -1,158 +1,110 @@
-let isLoggedIn = false;
-let userData = null;
+// assets/js/main.js
+(() => {
+  const cards = Array.from(document.querySelectorAll('.card'));
+  const targetCard = cards.find(c => c.textContent.trim().includes('Découvrir')) || cards[0];
 
-const modalLogin = document.getElementById('modal-login');
-const modalRegister = document.getElementById('modal-register');
-const userOverlay = document.getElementById('user-overlay');
-const burgerOverlay = document.getElementById('burger-overlay');
+  const modal = document.getElementById('map-modal');
+  const closeBtn = document.getElementById('close-map-modal');
+  const mapDiv = document.getElementById('map');
+  const controls = document.getElementById('map-controls');
 
-document.querySelector('.logo').addEventListener('click', () => {
-  window.location.href = 'index.html';
-});
+  let mapLoaded = false;
+  let map, markersLayer;
 
-document.getElementById('btn-login').addEventListener('click', () => {
-  if (isLoggedIn) {
-    userOverlay.classList.remove('hidden');
-  } else {
-    modalLogin.classList.remove('hidden');
+  // Colors by difficulty
+  const diffColor = { easy: '#2ecc71', medium: '#f39c12', hard: '#e74c3c' };
+
+  function getColorForDifficulty(d) { return diffColor[d] || '#3498db'; }
+
+  function showModal() {
+    modal.classList.remove('hidden');
+    if (!mapLoaded) initMap();
   }
-});
+  function hideModal() { modal.classList.add('hidden'); }
 
-document.getElementById('btn-menu').addEventListener('click', () => {
-    if (!userOverlay.classList.contains('hidden')) {
-        userOverlay.classList.add('hidden');
-    }
-  burgerOverlay.classList.remove('hidden');
-});
+  targetCard.addEventListener('click', showModal);
+  closeBtn.addEventListener('click', hideModal);
 
+  async function initMap() {
+    mapLoaded = true;
+    map = L.map(mapDiv).setView([43.212, 5.47], 12);
 
-document.getElementById('close-user-overlay').addEventListener('click', () => {
-  userOverlay.classList.add('hidden');
-});
-document.getElementById('close-burger-overlay').addEventListener('click', () => {
-  burgerOverlay.classList.add('hidden');
-});
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
 
+    // Use marker cluster group
+    markersLayer = L.markerClusterGroup();
+    map.addLayer(markersLayer);
 
-document.getElementById('switch-to-register').addEventListener('click', () => {
-  modalLogin.classList.add('hidden');
-  modalRegister.classList.remove('hidden');
-});
-
-document.getElementById('switch-to-login').addEventListener('click', () => {
-  modalRegister.classList.add('hidden');
-  modalLogin.classList.remove('hidden');
-});
-
-function showToast(message, type = "success") {
-  const container = document.getElementById("toast-container");
-
-  const toast = document.createElement("div");
-  toast.className = `toast ${type === "success" ? "toast-success" : "toast-error"}`;
-  toast.textContent = message;
-
-  container.appendChild(toast);
-
-  // Disparition après 3 secondes
-  setTimeout(() => {
-    toast.style.animation = "slide-out 0.5s forwards";
-    toast.addEventListener("animationend", () => toast.remove());
-  }, 3000);
-}
-
-
-
-
-document.getElementById('btn-login-submit').addEventListener('click', () => {
-  const email = document.getElementById('login-email').value;
-  const password = document.getElementById('login-password').value;
-
-  fetch('http://localhost/Parc-National-AAA-/Backend/src/routes/authRoutes.php?action=login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password })
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        isLoggedIn = true;
-        userData = data.user;
-        modalLogin.classList.add('hidden');
-  showToast(`Bienvenue ${userData.first_name} 👋`, "success");
-      } else {
-        showToast(data.message, "error");
-      }
-    });
-
-});
-
-
-document.getElementById('btn-register-submit').addEventListener('click', () => {
-  const email = document.getElementById('register-email').value;
-  const password = document.getElementById('register-password').value;
-  const firstName = document.getElementById('register-first-name').value;
-  const lastName = document.getElementById('register-last-name').value;
-
-  fetch('http://localhost/Parc-National-AAA-/Backend/src/routes/authRoutes.php?action=register', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password, firstName, lastName })
-  })
-  .then(async res => {
-    const text = await res.text();
-    console.log("Réponse brute :", text);  // <--- ajoute ça
     try {
-      return JSON.parse(text);
+      const res = await fetch('/api/calanques.php');
+      if (!res.ok) throw new Error('Erreur chargement calanques');
+      const geojson = await res.json();
+
+      L.geoJSON(geojson, {
+        pointToLayer: function(feature, latlng) {
+          const diff = (feature.properties && feature.properties.difficulty) || 'unknown';
+          const color = getColorForDifficulty(diff);
+          return L.circleMarker(latlng, {
+            radius: 8,
+            fillColor: color,
+            color: '#222',
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.9
+          });
+        },
+        onEachFeature: function(feature, layer) {
+          const p = feature.properties || {};
+          const html = `<strong>${p.name || 'Calanque'}</strong><br/>Niveau: ${p.difficulty || '—'}<br/>${p.description || ''}`;
+          layer.bindPopup(html);
+          layer.feature = feature;
+          markersLayer.addLayer(layer);
+        }
+      });
+
+      const bounds = markersLayer.getBounds();
+      if (bounds.isValid()) map.fitBounds(bounds.pad(0.2));
+
+      addLegend();
+      wireFilters();
+
     } catch (err) {
-      console.error("Erreur de parsing JSON :", err);
-      throw err;
+      console.error(err);
+      mapDiv.innerHTML = '<p>Impossible de charger la carte. Vérifiez le backend.</p>';
     }
-  })
-  .then(data => {
-    if (data.success) {
-      showToast(data.message, "success");
-      modalRegister.classList.add('hidden');
-      modalLogin.classList.remove('hidden');
-      showToast("Inscription réussie ! Connectez-vous 👌", "success");
-      // vider le formulaire
-      document.getElementById('register-email').value = "";
-      document.getElementById('register-password').value = "";
-      document.getElementById('register-first-name').value = "";
-      document.getElementById('register-last-name').value = "";
-    } else {
-      showToast(data.message, "error");
+  }
+
+  function addLegend() {
+    const legend = document.getElementById('map-legend');
+    legend.innerHTML = `
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <div><span style="display:inline-block;width:14px;height:14px;background:${diffColor.easy};border-radius:3px;margin-right:6px"></span>Facile</div>
+        <div><span style="display:inline-block;width:14px;height:14px;background:${diffColor.medium};border-radius:3px;margin-right:6px"></span>Moyen</div>
+        <div><span style="display:inline-block;width:14px;height:14px;background:${diffColor.hard};border-radius:3px;margin-right:6px"></span>Difficile</div>
+      </div>
+    `;
+  }
+
+  function wireFilters() {
+    const inputs = Array.from(controls.querySelectorAll('input[type=checkbox]'));
+    function updateVisibility() {
+      const active = inputs.filter(i => i.checked).map(i => i.dataset.diff);
+      markersLayer.eachLayer(layer => {
+        // markercluster wraps layers; get original feature if present
+        const feat = (layer.feature) ? layer.feature : (layer.options && layer.options.feature) ? layer.options.feature : null;
+        const props = feat && feat.properties ? feat.properties : {};
+        const d = props.difficulty || 'unknown';
+        // Show/hide marker by adding/removing it from cluster group
+        if (active.includes(d)) {
+          if (!markersLayer.hasLayer(layer)) markersLayer.addLayer(layer);
+        } else {
+          if (markersLayer.hasLayer(layer)) markersLayer.removeLayer(layer);
+        }
+      });
     }
-  });
+    inputs.forEach(i => i.addEventListener('change', updateVisibility));
+  }
 
-
-});
-
-
-document.getElementById('btn-logout').addEventListener('click', () => {
-  fetch('http://localhost/Parc-National-AAA-/Backend/api/logout.php')
-    .then(res => res.json())
-    .then(data => {
-      if (data.status === 'success') {
-        showToast(data.message, "success");
-        isLoggedIn = false;
-        userData = null;
-        userOverlay.classList.add('hidden');
-      }
-    });
-});
-
-
-window.addEventListener('DOMContentLoaded', () => {
-  fetch('http://localhost/Parc-National-AAA-/Backend/api/check-session.php')
-    .then(res => res.json())
-    .then(data => {
-      if (data.loggedIn) {
-        isLoggedIn = true;
-        userData = data.user;
-        console.log(`Connecté en tant que ${userData.first_name} ${userData.last_name}`);
-      } else {
-        isLoggedIn = false;
-        userData = null;
-      }
-    });
-});
+})();

@@ -148,3 +148,19 @@ ALTER TABLE `resource`
   ADD CONSTRAINT `resource_ibfk_2` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`);
 COMMIT;
 
+CREATE TABLE parcs (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nom VARCHAR(255) NOT NULL,
+  description TEXT,
+  latitude DOUBLE NOT NULL,
+  longitude DOUBLE NOT NULL
+);
+
+CREATE TABLE calanques (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  difficulty ENUM('easy','medium','hard') DEFAULT 'medium',
+  lng DOUBLE NOT NULL,
+  lat DOUBLE NOT NULL
+);
