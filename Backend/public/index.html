@@ -16,20 +16,6 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-
-  <!-- Map modal -->
-  <div id="map-modal" class="modal hidden">
-    <button id="close-map-modal" class="btn-close-overlay">✕</button>
-    <h2>Calanques de Marseille </h2>
-    <div id="map-controls" style="margin:8px 0">
-      <label><input type="checkbox" data-diff="easy" checked /> Facile</label>
-      <label style="margin-left:8px"><input type="checkbox" data-diff="medium" checked /> Moyen</label>
-      <label style="margin-left:8px"><input type="checkbox" data-diff="hard" checked /> Difficile</label>
-    </div>
-    <div id="map" style="width:100%;height:60vh;max-width:980px"></div>
-    <div id="map-legend" style="margin-top:6px"></div>
-  </div>
-
 </head>
 <body>
   <header class="header">
@@ -93,6 +79,19 @@
       <a href="#">Réservations</a>
       <div class="submenu">- Campings</div>
     </div>
+  </div>
+
+  <!-- Map modal (moved from <head> to <body>) -->
+  <div id="map-modal" class="modal hidden">
+    <button id="close-map-modal" class="btn-close-overlay">✕</button>
+    <h2>Calanques de Marseille </h2>
+    <div id="map-controls" style="margin:8px 0">
+      <label><input type="checkbox" data-diff="easy" checked /> Facile</label>
+      <label style="margin-left:8px"><input type="checkbox" data-diff="medium" checked /> Moyen</label>
+      <label style="margin-left:8px"><input type="checkbox" data-diff="hard" checked /> Difficile</label>
+    </div>
+    <div id="map" style="width:100%;height:60vh;max-width:980px"></div>
+    <div id="map-legend" style="margin-top:6px"></div>
   </div>
 
   <div id="toast-container" class="fixed top-5 right-5 z-50 space-y-2"></div>
