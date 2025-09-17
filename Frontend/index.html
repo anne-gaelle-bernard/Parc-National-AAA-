@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
@@ -6,8 +6,13 @@
   <title>Accueil - Calanques Réservation</title>
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cousine:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cousine:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    
+    <link rel="stylesheet" href="assets/css/map.css"/>  
 </head>
 <body>
   <header class="header">
@@ -18,8 +23,9 @@
     </div>
   </header>
 
-  <main class="main-content">
-    <section class="card">
+  <!-- SECTION ACCUEIL -->
+  <main id="home-section" class="main-content">
+    <section class="card" id="btn-show-map">
       <img src="assets/img/photo-parc.png" alt="Parc National" />
       <div class="card-text">Découvrir les Parcs Nationaux</div>
     </section>
@@ -30,53 +36,28 @@
     </section>
   </main>
 
-  <!-- Login modal -->
-<div id="modal-login" class="modal hidden">
-  <h2>Se connecter</h2>
-  <div id="login-message" class="text-center text-sm mt-2"></div>
-  <input type="email" id="login-email" placeholder="Email" />
-  <input type="password" id="login-password" placeholder="Mot de passe" />
-  <button id="btn-login-submit">Connexion</button>
-  <div class="switch">Pas de compte ? <span id="switch-to-register">S'inscrire</span></div>
-</div>
+  <!-- SECTION CARTE -->
+  <main id="sentiers-section">
+    <button id="btn-back-home">
+      ← Retour à l’accueil
+    </button>
 
-<!-- Register modal -->
-<div id="modal-register" class="modal hidden">
-  <h2>Créer un compte</h2>
-  <div id="register-message" class="text-center text-sm mt-2"></div>
-  <input type="text" id="register-first-name" placeholder="Prénom" />
-  <input type="text" id="register-last-name" placeholder="Nom" />
-  <input type="email" id="register-email" placeholder="Email" />
-  <input type="password" id="register-password" placeholder="Mot de passe" />
-  <button id="btn-register-submit">S'inscrire</button>
-  <div class="switch">Déjà un compte ? <span id="switch-to-login">Se connecter</span></div>
-</div>
+    <h2>Carte des Sentiers - Calanques de Marseille</h2>
+    <div id="map"></div>
 
-<!-- Overlay utilisateur connecté -->
-<div id="user-overlay" class="hidden">
-  <button class="btn-close-overlay" id="close-user-overlay">✕</button>
-  <h2>Mon compte</h2>
-  <button>Voir mon profil</button>
-  <button>Mes réservations</button>
-  <button id="btn-logout">Se déconnecter</button>
-</div>
+    <div class="form-sentier">
+      <h3>Ajouter un sentier</h3>
+      <form method="POST" action="sentiers_crud.php">
+        <input type="text" name="nom" placeholder="Nom du sentier" required>
+        <textarea name="description" placeholder="Description"></textarea>
+        <input type="text" name="latitude" id="latitude" placeholder="Latitude" required>
+        <input type="text" name="longitude" id="longitude" placeholder="Longitude" required>
+        <button type="submit" name="add">Ajouter</button>
+      </form>
+    </div>
+  </main>
 
-<!-- Overlay menu burger -->
-<div id="burger-overlay" class="hidden">
-  <button class="btn-close-overlay" id="close-burger-overlay">✕</button>
-  <div class="burger-menu">
-    <a href="#">Parcs Nationaux</a>
-    <div class="submenu">- Sentiers</div>
-    <div class="submenu">- Ressources naturelles</div>
-    <a href="#">Réservations</a>
-    <div class="submenu">- Campings</div>
-  </div>
-</div>
-
-<div id="toast-container" class="fixed top-5 right-5 z-50 space-y-2"></div>
-
-<script src="assets/js/main.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="assets/js/map.js"></script>
 </body>
 </html>
-
-
