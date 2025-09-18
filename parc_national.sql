@@ -1,6 +1,9 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
+SET FOREIGN_KEY_CHECKS = 0;
+SET UNIQUE_CHECKS = 0;
 
 DROP TABLE IF EXISTS `camping`;
 CREATE TABLE IF NOT EXISTS `camping` (
@@ -11,19 +14,16 @@ CREATE TABLE IF NOT EXISTS `camping` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
 DROP TABLE IF EXISTS `campsite`;
 CREATE TABLE IF NOT EXISTS `campsite` (
   `id` int NOT NULL AUTO_INCREMENT,
   `number` varchar(50) DEFAULT NULL,
-  `capacity` int DEFAULT NULL,
-  `price` decimal(10,2) DEFAULT NULL,
+  `max_capacity` int DEFAULT NULL,
+  `price_per_night` decimal(10,2) DEFAULT NULL,
   `camping_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `camping_id` (`camping_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-
 
 DROP TABLE IF EXISTS `notification`;
 CREATE TABLE IF NOT EXISTS `notification` (
@@ -39,7 +39,6 @@ CREATE TABLE IF NOT EXISTS `notification` (
   KEY `author_id` (`author_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
 DROP TABLE IF EXISTS `point_of_interest`;
 CREATE TABLE IF NOT EXISTS `point_of_interest` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -51,22 +50,19 @@ CREATE TABLE IF NOT EXISTS `point_of_interest` (
   KEY `trail_id` (`trail_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
-
 DROP TABLE IF EXISTS `reservation`;
 CREATE TABLE IF NOT EXISTS `reservation` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `reservation_date` datetime DEFAULT CURRENT_TIMESTAMP,
-  `status` enum('confirmed','cancelled') DEFAULT 'confirmed',
   `user_id` int DEFAULT NULL,
   `campsite_id` int DEFAULT NULL,
-  `time_slot_id` int DEFAULT NULL,
+  `check_in_date` date DEFAULT NULL,
+  `check_out_date` date DEFAULT NULL,
+  `status` enum('confirmed','cancelled') DEFAULT 'confirmed',
+  `total_price` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
-  KEY `campsite_id` (`campsite_id`),
-  KEY `time_slot_id` (`time_slot_id`)
+  KEY `campsite_id` (`campsite_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 
 DROP TABLE IF EXISTS `resource`;
 CREATE TABLE IF NOT EXISTS `resource` (
@@ -83,8 +79,6 @@ CREATE TABLE IF NOT EXISTS `resource` (
   KEY `author_id` (`author_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
-
 DROP TABLE IF EXISTS `time_slot`;
 CREATE TABLE IF NOT EXISTS `time_slot` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -93,7 +87,6 @@ CREATE TABLE IF NOT EXISTS `time_slot` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `date` (`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 
 DROP TABLE IF EXISTS `trail`;
 CREATE TABLE IF NOT EXISTS `trail` (
@@ -105,8 +98,6 @@ CREATE TABLE IF NOT EXISTS `trail` (
   `map_url` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
@@ -120,31 +111,57 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
 ALTER TABLE `campsite`
   ADD CONSTRAINT `campsite_ibfk_1` FOREIGN KEY (`camping_id`) REFERENCES `camping` (`id`);
-
-
 
 ALTER TABLE `notification`
   ADD CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `notification_ibfk_2` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`);
 
-
-
 ALTER TABLE `point_of_interest`
   ADD CONSTRAINT `point_of_interest_ibfk_1` FOREIGN KEY (`trail_id`) REFERENCES `trail` (`id`);
 
-
 ALTER TABLE `reservation`
   ADD CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`campsite_id`) REFERENCES `campsite` (`id`),
-  ADD CONSTRAINT `reservation_ibfk_3` FOREIGN KEY (`time_slot_id`) REFERENCES `time_slot` (`id`);
-
-
+  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`campsite_id`) REFERENCES `campsite` (`id`);
 
 ALTER TABLE `resource`
   ADD CONSTRAINT `resource_ibfk_1` FOREIGN KEY (`trail_id`) REFERENCES `trail` (`id`),
   ADD CONSTRAINT `resource_ibfk_2` FOREIGN KEY (`author_id`) REFERENCES `user` (`id`);
+
+SET FOREIGN_KEY_CHECKS = 1;
+SET UNIQUE_CHECKS = 1;
 COMMIT;
+
+--
+-- Insertion des données pour la table `camping`
+--
+
+INSERT INTO `camping` (`id`, `name`, `location`, `description`)
+VALUES
+(1, 'Camping SORMIOU', 'Calanque de Sormiou, Marseille', 'Camping situé dans la magnifique calanque de Sormiou, offrant des vues imprenables sur la mer Méditerranée.'),
+(2, 'Camping MORGIOU', 'Calanque de Morgiou, Marseille', 'Profitez d\'un séjour paisible dans la calanque de Morgiou, avec accès direct à la plage et aux sentiers de randonnée.'),
+(3, 'Camping CALLELONGUE', 'Calanque de Callelongue, Marseille', 'Petit camping familial niché au cœur de la calanque de Callelongue, idéal pour la détente et les activités nautiques.');
+
+--
+-- Insertion des données pour la table `campsite`
+--
+
+INSERT INTO `campsite` (`id`, `number`, `max_capacity`, `price_per_night`, `camping_id`)
+VALUES
+(1, 'A1', 10, 20.00, 1),
+(2, 'A2', 10, 20.00, 1),
+(3, 'A3', 10, 20.00, 1),
+(4, 'A4', 10, 20.00, 1),
+(5, 'A5', 10, 20.00, 1),
+(6, 'B1', 10, 20.00, 2),
+(7, 'B2', 10, 20.00, 2),
+(8, 'B3', 10, 20.00, 2),
+(9, 'B4', 10, 20.00, 2),
+(10, 'B5', 10, 20.00, 2),
+(11, 'C1', 10, 20.00, 3),
+(12, 'C2', 10, 20.00, 3),
+(13, 'C3', 10, 20.00, 3),
+(14, 'C4', 10, 20.00, 3),
+(15, 'C5', 10, 20.00, 3);
 

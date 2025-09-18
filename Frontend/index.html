@@ -1,3 +1,7 @@
+<?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -28,6 +32,30 @@
       <img src="assets/img/photo-parc2.png" alt="Réserver un parc" />
       <div class="card-text">Réserver</div>
     </section>
+    <!-- Conteneur pour la page de réservation des campings -->
+    <div id="reservation-campings-page-container" class="hidden">
+        <h2>Campings Disponibles</h2>
+        <div id="campings-list-container" class="grid-container">
+            <!-- Les campings seront injectés ici par JavaScript -->
+        </div>
+        <button id="back-to-home-from-campings-list">Retour à l'accueil</button>
+    </div>
+
+    <!-- Conteneur pour les détails d'un camping spécifique -->
+    <div id="camping-details-view" class="hidden">
+        <button id="back-to-campings-list">Retour à la liste des campings</button>
+        <h2 id="camping-detail-title"></h2>
+        <img id="camping-detail-image" src="" alt="" />
+        <p id="camping-detail-description"></p>
+        <button>Réserver ce camping</button>
+    </div>
+
+    <!-- Conteneur pour la page des réservations utilisateur -->
+    <div id="user-reservations-page-container" class="hidden">
+        <h2>Mes Réservations (Contenu temporaire)</h2>
+        <p>Voici la liste de vos réservations passées et futures.</p>
+        <button id="back-to-home-from-user-reservations">Retour à l'accueil</button>
+    </div>
   </main>
 
   <!-- Login modal -->
@@ -57,7 +85,7 @@
   <button class="btn-close-overlay" id="close-user-overlay">✕</button>
   <h2>Mon compte</h2>
   <button>Voir mon profil</button>
-  <button>Mes réservations</button>
+  <button id="btn-show-user-reservations">Mes réservations</button>
   <button id="btn-logout">Se déconnecter</button>
 </div>
 
@@ -68,14 +96,15 @@
     <a href="#">Parcs Nationaux</a>
     <div class="submenu">- Sentiers</div>
     <div class="submenu">- Ressources naturelles</div>
-    <a href="#">Réservations</a>
+    <a href="#" id="btn-show-campings">Campings</a>
     <div class="submenu">- Campings</div>
+    <a href="#" id="btn-reserve-campings">Réservation Campings</a>
   </div>
 </div>
 
 <div id="toast-container" class="fixed top-5 right-5 z-50 space-y-2"></div>
 
-<script src="assets/js/main.js"></script>
+<script type="module" src="/Parc-National-AAA-/Frontend/assets/js/main.js"></script>
 </body>
 </html>
 

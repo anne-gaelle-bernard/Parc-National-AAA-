@@ -64,7 +64,7 @@ body {
   border-radius: 20px;
 }
 
-.card-text {
+.card > .card-text {
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -201,31 +201,36 @@ body {
 /* Conteneur global (déjà présent dans ton HTML) */
 #toast-container {
   position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 9999;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 10px;
 }
 
 /* Styles des toasts */
 .toast {
-  min-width: 200px;
-  max-width: 300px;
-  padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
+  padding: 10px 20px;
+  border-radius: 5px;
   color: white;
-  font-size: 0.875rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  opacity: 0;
-  transform: translateX(100%);
-  animation: slide-in 0.3s forwards;
+  font-size: 14px;
+  opacity: 0.9;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
 /* Types */
-.toast-success { background-color: #16a34a; } /* vert */
-.toast-error { background-color: #dc2626; }   /* rouge */
+.toast-info {
+  background-color: #3498db; /* Bleu */
+}
+
+.toast-success {
+  background-color: #2ecc71; /* Vert */
+}
+
+.toast-error {
+  background-color: #e74c3c; /* Rouge */
+}
 
 /* Animations */
 @keyframes slide-in {
@@ -245,4 +250,30 @@ body {
     align-items: center;
     gap: 2rem;
   }
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.camping-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.camping-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.camping-card .card-text {
+  padding: 15px;
+  font-weight: bold;
 }
