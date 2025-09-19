@@ -55,21 +55,21 @@ const init = () => {
     {
       id: "sormiou",
       name: "Camping de SORMIOU",
-      image: "assets/img/Camping de SORMIOU.jpg",
+      image: "Frontend/assets/img/Camping de SORMIOU.jpg", // Chemin corrigé
       description:
         "Découvrez le magnifique camping de Sormiou, idéalement situé près de la calanque. Profitez d'un cadre naturel exceptionnel pour vos vacances.",
     },
     {
       id: "morgiou",
       name: "Camping de MORGIOU",
-      image: "assets/img/Camping de MORGIOU.jpg",
+      image: "Frontend/assets/img/Camping de MORGIOU.jpg", // Chemin corrigé
       description:
         "Le camping de Morgiou offre une vue imprenable sur la mer et un accès facile aux sentiers de randonnée. Parfait pour les amoureux de la nature.",
     },
     {
       id: "callelongue",
       name: "Camping de CALLELONGUE",
-      image: "assets/img/Camping de CALLELONGUE.jpg",
+      image: "Frontend/assets/img/Camping de CALLELONGUE.jpg", // Chemin corrigé
       description:
         "Situé dans la charmante calanque de Callelongue, ce camping est un havre de paix. Idéal pour la détente et les activités nautiques.",
     },

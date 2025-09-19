@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Confirmation de Réservation - Calanques Réservation</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cousine:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="header">
+    <div class="header-icons">
+      <img src="assets/img/user-icon.png" alt="Profil" id="btn-login" />
+      <img src="assets/img/logo.png" alt="Logo Calanques Réservation" class="logo" />
+      <img src="assets/img/burger-icon.png" alt="Menu" id="btn-menu" />
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section class="confirmation-details">
+      <h2>Votre Réservation est Confirmée !</h2>
+      <p>Merci pour votre réservation. Voici les détails :</p>
+      <p><strong>ID de réservation:</strong> <span id="reservation-id"></span></p>
+      <p><strong>Camping:</strong> <span id="camping-name"></span></p>
+      <p><strong>Date d'arrivée:</strong> <span id="check-in-date"></span></p>
+      <p><strong>Date de départ:</strong> <span id="check-out-date"></span></p>
+      <p><strong>Nombre de personnes:</strong> <span id="number-of-persons"></span></p>
+      <p><strong>Prix total:</strong> <span id="total-price"></span> €</p>
+
+      <button id="cancel-reservation-btn">Annuler la réservation</button>
+      <button id="back-to-home-btn">Retour à l'accueil</button>
+    </section>
+  </main>
+
+  <div id="toast-container" class="fixed top-5 right-5 z-50 space-y-2"></div>
+
+  <script type="module" src="assets/js/main.js"></script>
+  <script type="module" src="assets/js/confirmation.js"></script>
+</body>
+</html>

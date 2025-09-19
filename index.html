@@ -1,12 +1,109 @@
+<?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+?>
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <meta http-equiv="refresh" content="0; url=./Frontend/index.html" />
-    <title>Redirection</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Accueil - Calanques Réservation</title>
+  <link rel="stylesheet" href="Frontend/assets/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cousine:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <p>Vous allez être redirigé vers l'application...</p>
-    <a href="./Frontend/index.html">Cliquez ici si la redirection ne fonctionne pas.</a>
+  <header class="header">
+    <div class="header-icons">
+      <img src="Frontend/assets/img/user-icon.png" alt="Profil" id="btn-login" />
+      <img src="Frontend/assets/img/logo.png" alt="Logo Calanques Réservation" class="logo" />
+      <img src="Frontend/assets/img/burger-icon.png" alt="Menu" id="btn-menu" />
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section class="card">
+      <img src="Frontend/assets/img/photo-parc.png" alt="Parc National" />
+      <div class="card-text">Découvrir les Parcs Nationaux</div>
+    </section>
+
+    <section class="card">
+      <img src="Frontend/assets/img/photo-parc2.png" alt="Réserver un parc" />
+      <div class="card-text">Réserver</div>
+    </section>
+    <!-- Conteneur pour la page de réservation des campings -->
+    <div id="reservation-campings-page-container" class="hidden">
+        <h2>Campings Disponibles</h2>
+        <div id="campings-list-container" class="grid-container">
+            <!-- Les campings seront injectés ici par JavaScript -->
+        </div>
+        <button id="back-to-home-from-campings-list">Retour à l'accueil</button>
+    </div>
+
+    <!-- Conteneur pour les détails d'un camping spécifique -->
+    <div id="camping-details-view" class="hidden">
+        <button id="back-to-campings-list">Retour à la liste des campings</button>
+        <h2 id="camping-detail-title"></h2>
+        <img id="camping-detail-image" src="" alt="" />
+        <p id="camping-detail-description"></p>
+        <button>Réserver ce camping</button>
+    </div>
+
+    <!-- Conteneur pour la page des réservations utilisateur -->
+    <div id="user-reservations-page-container" class="hidden">
+        <h2>Mes Réservations (Contenu temporaire)</h2>
+        <p>Voici la liste de vos réservations passées et futures.</p>
+        <button id="back-to-home-from-user-reservations">Retour à l'accueil</button>
+    </div>
+  </main>
+
+  <!-- Login modal -->
+<div id="modal-login" class="modal hidden">
+  <h2>Se connecter</h2>
+  <div id="login-message" class="text-center text-sm mt-2"></div>
+  <input type="email" id="login-email" placeholder="Email" />
+  <input type="password" id="login-password" placeholder="Mot de passe" />
+  <button id="btn-login-submit">Connexion</button>
+  <div class="switch">Pas de compte ? <span id="switch-to-register">S'inscrire</span></div>
+</div>
+
+<!-- Register modal -->
+<div id="modal-register" class="modal hidden">
+  <h2>Créer un compte</h2>
+  <div id="register-message" class="text-center text-sm mt-2"></div>
+  <input type="text" id="register-first-name" placeholder="Prénom" />
+  <input type="text" id="register-last-name" placeholder="Nom" />
+  <input type="email" id="register-email" placeholder="Email" />
+  <input type="password" id="register-password" placeholder="Mot de passe" />
+  <button id="btn-register-submit">S'inscrire</button>
+  <div class="switch">Déjà un compte ? <span id="switch-to-login">Se connecter</span></div>
+</div>
+
+<!-- Overlay utilisateur connecté -->
+<div id="user-overlay" class="hidden">
+  <button class="btn-close-overlay" id="close-user-overlay">✕</button>
+  <h2>Mon compte</h2>
+  <button>Voir mon profil</button>
+  <button id="btn-show-user-reservations">Mes réservations</button>
+  <button id="btn-logout">Se déconnecter</button>
+</div>
+
+<!-- Overlay menu burger -->
+<div id="burger-overlay" class="hidden">
+  <button class="btn-close-overlay" id="close-burger-overlay">✕</button>
+  <div class="burger-menu">
+    <a href="#">Parcs Nationaux</a>
+    <div class="submenu">- Sentiers</div>
+    <div class="submenu">- Ressources naturelles</div>
+    <a href="#" id="btn-show-campings">Campings</a>
+    <div class="submenu">- Campings</div>
+    <a href="#" id="btn-reserve-campings">Réservation Campings</a>
+  </div>
+</div>
+
+<div id="toast-container" class="fixed top-5 right-5 z-50 space-y-2"></div>
+
+<script type="module" src="/Parc-National-AAA-/Frontend/assets/js/main.js"></script>
 </body>
 </html>
-

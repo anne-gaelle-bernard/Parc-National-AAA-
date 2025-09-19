@@ -1,5 +1,15 @@
 import { showToast } from '/Parc-National-AAA-/Frontend/assets/js/main.js';
 
+const getCampingImageUrl = (campingName) => {
+    const images = {
+        "Camping SORMIOU": "Frontend/assets/img/Camping de SORMIOU.jpg",
+        "Camping MORGIOU": "Frontend/assets/img/Camping de MORGIOU.jpg",
+        "Camping CALLELONGUE": "Frontend/assets/img/Camping de CALLELONGUE.jpg",
+        // Ajoutez d'autres campings ici si nécessaire
+    };
+    return images[campingName] || null; // Retourne l'URL ou null si non trouvée
+};
+
 export class CampingDetailsPage {
     constructor(containerId, campingId) {
         this.container = document.getElementById(containerId);
@@ -32,7 +42,8 @@ export class CampingDetailsPage {
             return;
         }
 
-        const { name, description, campsites } = this.campingData;
+        const { name, description, campsites } = this.campingData; // Removed image_url
+        const imageUrl = getCampingImageUrl(name);
 
         let campsitesHtml = campsites.map(campsite => `
             <div class="campsite-card">
@@ -57,10 +68,12 @@ export class CampingDetailsPage {
                 <button id="back-to-campings-list">Retour à la liste des campings</button>
                 <h2>${name}</h2>
                 <p>${description}</p>
+                ${imageUrl ? `<img src="/Parc-National-AAA-/${imageUrl}" alt="Image de ${name}" class="camping-detail-image"/>` : ''} <!-- Added image display -->
                 <h3>Emplacements disponibles:</h3>
                 <div class="campsites-list">
                     ${campsitesHtml}
                 </div>
+                <button id="reserve-camping-button">Réserver ce camping</button>
             </div>
         `;
 
@@ -78,76 +91,8 @@ export class CampingDetailsPage {
             // For now, we'll assume it's still there and just toggle visibility
         });
 
-        this.container.querySelectorAll('.reservation-form').forEach(form => {
-            const checkInInput = form.querySelector('input[type="date"][id^="check-in-"]');
-            const checkOutInput = form.querySelector('input[type="date"][id^="check-out-"]');
-            const numPersonsInput = form.querySelector('input[type="number"][id^="num-persons-"]');
-            const totalPriceSpan = form.querySelector('.total-price');
-
-            const calculatePrice = () => {
-                const checkInDate = new Date(checkInInput.value);
-                const checkOutDate = new Date(checkOutInput.value);
-                const numPersons = parseInt(numPersonsInput.value);
-                const pricePerNight = parseFloat(form.closest('.campsite-card').querySelector('p:nth-of-type(2)').textContent.split(': ')[1]);
-
-                if (checkInDate && checkOutDate && numPersons > 0 && checkOutDate > checkInDate) {
-                    const diffTime = Math.abs(checkOutDate - checkInDate);
-                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                    const totalPrice = diffDays * pricePerNight * numPersons;
-                    totalPriceSpan.textContent = totalPrice.toFixed(2);
-                } else {
-                    totalPriceSpan.textContent = "0.00";
-                }
-            };
-
-            checkInInput.addEventListener('change', calculatePrice);
-            checkOutInput.addEventListener('change', calculatePrice);
-            numPersonsInput.addEventListener('change', calculatePrice);
-
-            form.addEventListener('submit', async (event) => {
-                event.preventDefault();
-
-                // For now, assume a logged-in user with ID 1
-                const userId = 1; 
-                const campsiteId = form.dataset.campsiteId;
-                const checkInDate = checkInInput.value;
-                const checkOutDate = checkOutInput.value;
-                const numberOfPersons = parseInt(numPersonsInput.value);
-
-                const reservationData = {
-                    user_id: userId,
-                    campsite_id: campsiteId,
-                    check_in_date: checkInDate,
-                    check_out_date: checkOutDate,
-                    number_of_persons: numberOfPersons
-                };
-
-                try {
-                    const response = await fetch('http://localhost/Parc-National-AAA-/Backend/api/reservations.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(reservationData),
-                    });
-
-                    const result = await response.json();
-
-                    if (response.ok) {
-                        showToast(`Réservation confirmée pour ${result.total_price} € !`, "success");
-                        // Clear form fields
-                        checkInInput.value = '';
-                        checkOutInput.value = '';
-                        numPersonsInput.value = '1';
-                        totalPriceSpan.textContent = "0.00";
-                    } else {
-                        showToast(`Erreur de réservation: ${result.message}`, "error");
-                    }
-                } catch (error) {
-                    console.error("Erreur de réseau lors de la réservation:", error);
-                    showToast("Erreur de connexion au serveur lors de la réservation.", "error");
-                }
-            });
+        document.getElementById('reserve-camping-button').addEventListener('click', () => {
+            window.location.href = `/Parc-National-AAA-/Frontend/reservation.html?camping_id=${this.campingId}&camping_name=${encodeURIComponent(name)}`;
         });
     }
 }
