@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cancelReservationBtn.addEventListener("click", async () => {
       if (confirm("Êtes-vous sûr de vouloir annuler cette réservation ?")) {
         try {
-          const response = await fetch("../../../Backend/api/reservations.php", {
+          const response = await fetch("/Parc-National-AAA-/Backend/api/reservations.php", {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",

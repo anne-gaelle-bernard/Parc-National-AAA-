@@ -27,9 +27,7 @@ class User {
         $stmt->bindParam(":first_name", $this->first_name);
         $stmt->bindParam(":last_name", $this->last_name);
         $stmt->bindParam(":email", $this->email);
-
-        $password_hash = password_hash($this->password_hash, PASSWORD_BCRYPT);
-        $stmt->bindParam(":password_hash", $password_hash);
+        $stmt->bindParam(":password_hash", $this->password_hash);
 
         if($stmt->execute()) {
             return true;

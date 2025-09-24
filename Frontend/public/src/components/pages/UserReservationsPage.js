@@ -58,7 +58,7 @@ export class UserReservationsPage {
         const reservations = await this.fetchUserReservations();
 
         if (reservations.length === 0) {
-            this.container.innerHTML = '<p>Vous n\'avez aucune réservation.</p>';
+            this.container.innerHTML = '';
             return;
         }
 
