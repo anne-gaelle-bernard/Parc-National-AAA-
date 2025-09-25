@@ -55,10 +55,53 @@
 <!-- Overlay utilisateur connecté -->
 <div id="user-overlay" class="hidden">
   <button class="btn-close-overlay" id="close-user-overlay">✕</button>
-  <h2>Mon compte</h2>
-  <button>Voir mon profil</button>
+  <h2 id="user-overlay-title">Mon compte</h2>
+  <button id="btn-show-my-profile" class="button-link">Voir mon profil</button>
+  <div id="profile-details-container" class="profile-details-section hidden">
+    <!-- Les détails du profil seront affichés ici -->
+    <button id="btn-back-to-user-overlay" class="button-link back-button">Retour à l'accueil</button>
+  </div>
   <button id="btn-show-user-reservations">Mes réservations</button>
   <button id="btn-logout">Se déconnecter</button>
+
+  <div id="profile-section" class="hidden">
+    <h1>Mon Profil</h1>
+    <div class="profile-details">
+        <p><strong>Nom d'utilisateur:</strong> <span id="profile-username"></span></p>
+        <p><strong>Email:</strong> <span id="profile-email"></span></p>
+        <p><strong>Rôle:</strong> <span id="profile-role"></span></p>
+    </div>
+    <button id="edit-profile-button">Modifier le Profil</button>
+
+    <form id="edit-profile-form" class="hidden">
+        <h2>Modifier les informations du profil</h2>
+        <label for="edit-first-name">Prénom:</label>
+        <input type="text" id="edit-first-name" required>
+
+        <label for="edit-last-name">Nom de famille:</label>
+        <input type="text" id="edit-last-name" required>
+
+        <label for="edit-email">Email:</label>
+        <input type="email" id="edit-email" required>
+
+        <button type="submit" id="save-profile-button">Enregistrer les modifications</button>
+        <button type="button" id="cancel-edit-button">Annuler</button>
+    </form>
+
+    <h2>Modifier le Mot de Passe</h2>
+    <form id="change-password-form">
+        <label for="current-password">Mot de passe actuel:</label>
+        <input type="password" id="current-password" required>
+
+        <label for="new-password">Nouveau mot de passe:</label>
+        <input type="password" id="new-password" required>
+
+        <label for="confirm-new-password">Confirmer le nouveau mot de passe:</label>
+        <input type="password" id="confirm-new-password" required>
+
+        <button type="submit">Changer le Mot de Passe</button>
+    </form>
+  </div>
 </div>
 
 <!-- Overlay menu burger -->
