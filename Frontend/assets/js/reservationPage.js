@@ -1,5 +1,6 @@
 import { createConfirmationPage, setupConfirmationPageLogic } from './confirmationPage.js';
 import { campingService } from '../../services/campingService.js';
+import { showToast } from './uiManager.js'; // Importation corrigée
 
 export function createReservationPage() {
   const mainContent = document.createElement('main');
@@ -11,7 +12,7 @@ export function createReservationPage() {
         <div class="form-group">
           <label for="campsite-select">Sélectionnez un emplacement:</label>
           <select id="campsite-select" name="campsite-id" required>
-            <!-- Les options seront chargées dynamiquement par JS -->
+
           </select>
         </div>
         <div class="form-group">
@@ -86,8 +87,8 @@ export function setupReservationPageLogic(container) {
     if (!campingId) return;
     try {
       const data = await campingService.getCampingDetails(campingId);
-      if (data && data.campsites) {
-        allCampsites = data.campsites; // Stocker les emplacements
+      if (data && data.camping && data.camping.campsites) {
+        allCampsites = data.camping.campsites; // Stocker les emplacements
         campsiteSelect.innerHTML = '<option value="">Choisissez un emplacement</option>';
         allCampsites.forEach(campsite => {
           const option = document.createElement('option');
@@ -226,6 +227,13 @@ export function setupReservationPageLogic(container) {
         console.error("Erreur réseau ou du serveur:", error);
         showToast("Une erreur est survenue. Veuillez réessayer.", "error");
       }
+    });
+  }
+
+  if (backToHomeBtn) {
+    backToHomeBtn.addEventListener('click', () => {
+      history.pushState({ page: 'home' }, '', '/');
+      window.dispatchEvent(new Event('popstate'));
     });
   }
 }

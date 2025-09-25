@@ -9,6 +9,7 @@ class User {
     public $last_name;
     public $email;
     public $password_hash;
+    public $role;
 
     public function __construct($db) {
         $this->conn = $db;
@@ -36,7 +37,7 @@ class User {
     }
 
     function findByEmail() {
-        $query = "SELECT id, first_name, last_name, email, password_hash FROM " . $this->table_name . " WHERE email = ? LIMIT 0,1";
+        $query = "SELECT id, first_name, last_name, email, password_hash, role FROM " . $this->table_name . " WHERE email = ? LIMIT 0,1";
 
         $stmt = $this->conn->prepare($query);
         $this->email = htmlspecialchars(strip_tags($this->email));
@@ -53,7 +54,70 @@ class User {
             $this->last_name = $row['last_name'];
             $this->email = $row['email'];
             $this->password_hash = $row['password_hash'];
+            $this->role = $row['role'];
 
+            return true;
+        }
+        return false;
+    }
+
+    function readOne() {
+        $query = "SELECT id, first_name, last_name, email, password_hash, role FROM " . $this->table_name . " WHERE id = ? LIMIT 0,1";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $this->id);
+        $stmt->execute();
+
+        $num = $stmt->rowCount();
+
+        if($num > 0) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $this->id = $row['id'];
+            $this->first_name = $row['first_name'];
+            $this->last_name = $row['last_name'];
+            $this->email = $row['email'];
+            $this->password_hash = $row['password_hash'];
+            $this->role = $row['role'];
+
+            return true;
+        }
+        return false;
+    }
+
+    function update() {
+        $query = "UPDATE " . $this->table_name . " SET first_name = :first_name, last_name = :last_name, email = :email WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->first_name = htmlspecialchars(strip_tags($this->first_name));
+        $this->last_name = htmlspecialchars(strip_tags($this->last_name));
+        $this->email = htmlspecialchars(strip_tags($this->email));
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(':first_name', $this->first_name);
+        $stmt->bindParam(':last_name', $this->last_name);
+        $stmt->bindParam(':email', $this->email);
+        $stmt->bindParam(':id', $this->id);
+
+        if($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    function updatePassword() {
+        $query = "UPDATE " . $this->table_name . " SET password_hash = :password_hash WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        $this->password_hash = htmlspecialchars(strip_tags($this->password_hash));
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(':password_hash', $this->password_hash);
+        $stmt->bindParam(':id', $this->id);
+
+        if($stmt->execute()) {
             return true;
         }
         return false;

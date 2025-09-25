@@ -5,12 +5,12 @@ export function createConfirmationPage(reservationDetails) {
     <section class="confirmation-details">
       <h2>Votre Réservation est Confirmée !</h2>
       <p>Merci pour votre réservation. Voici les détails :</p>
-      <p><strong>ID de réservation:</strong> <span id="reservation-id">${reservationDetails.reservationId || 'N/A'}</span></p>
-      <p><strong>Camping:</strong> <span id="camping-name">${reservationDetails.campingName || 'N/A'}</span></p>
-      <p><strong>Date d'arrivée:</strong> <span id="check-in-date">${reservationDetails.arrivalDate || 'N/A'}</span></p>
-      <p><strong>Date de départ:</strong> <span id="check-out-date">${reservationDetails.departureDate || 'N/A'}</span></p>
-      <p><strong>Nombre de personnes:</strong> <span id="number-of-persons">${reservationDetails.numberOfPersons || 'N/A'}</span></p>
-      <p><strong>Prix total:</strong> <span id="total-price">${reservationDetails.totalPrice ? reservationDetails.totalPrice + ' €' : 'N/A'}</span></p>
+      <p><strong>ID de réservation:</strong> <span id="reservation-id">${reservationDetails.reservation_id || 'N/A'}</span></p>
+      <p><strong>Camping:</strong> <span id="camping-name">${reservationDetails.camping_name || 'N/A'}</span></p>
+      <p><strong>Date d'arrivée:</strong> <span id="check-in-date">${reservationDetails.check_in_date || 'N/A'}</span></p>
+      <p><strong>Date de départ:</strong> <span id="check-out-date">${reservationDetails.check_out_date || 'N/A'}</span></p>
+      <p><strong>Nombre de personnes:</strong> <span id="number-of-persons">${reservationDetails.number_of_persons || 'N/A'}</span></p>
+      <p><strong>Prix total:</strong> <span id="total-price">${reservationDetails.total_price ? reservationDetails.total_price + ' €' : 'N/A'}</span></p>
 
       <button id="cancel-reservation-btn">Annuler la réservation</button>
       <button id="back-to-home-btn">Retour à l'accueil</button>
