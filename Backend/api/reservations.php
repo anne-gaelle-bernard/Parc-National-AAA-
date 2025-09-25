@@ -57,7 +57,7 @@ $database = new Database();
             return;
         }
 
-        // Calculate total price
+        // Calculate total price (always recalculate on backend for security)
         $startDate = new DateTime($checkInDate);
         $endDate = new DateTime($checkOutDate);
         $interval = $startDate->diff($endDate);
@@ -71,7 +71,7 @@ $database = new Database();
 
         $totalPrice = $numberOfNights * $campsite['price_per_night'] * $numberOfPersons;
 
-        // Check for availability (simple check for now, needs more robust logic for real-world)
+        // Check for availability
         $queryAvailability = "
             SELECT COUNT(*)
             FROM reservation
@@ -92,8 +92,6 @@ $database = new Database();
         $stmtAvailability->execute();
         $overlappingReservations = $stmtAvailability->fetchColumn();
 
-        // For simplicity, assuming one reservation per campsite at a time. 
-        // In a real system, you'd check remaining capacity for each day.
         if ($overlappingReservations > 0) {
             http_response_code(409); // Conflict
             echo json_encode(array("message" => "Campsite is not available for the selected dates."));
@@ -101,14 +99,15 @@ $database = new Database();
         }
 
         // Create reservation
-        $query = "INSERT INTO reservation (user_id, campsite_id, check_in_date, check_out_date, total_price) VALUES (?, ?, ?, ?, ?)";
+        $query = "INSERT INTO reservation (user_id, campsite_id, check_in_date, check_out_date, number_of_persons, total_price) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($query);
         
         $stmt->bindParam(1, $userId);
         $stmt->bindParam(2, $campsiteId);
         $stmt->bindParam(3, $checkInDate);
         $stmt->bindParam(4, $checkOutDate);
-        $stmt->bindParam(5, $totalPrice);
+        $stmt->bindParam(5, $numberOfPersons);
+        $stmt->bindParam(6, $totalPrice);
 
         if ($stmt->execute()) {
             http_response_code(201);

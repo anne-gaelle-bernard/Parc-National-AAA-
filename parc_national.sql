@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS `reservation` (
   `campsite_id` int DEFAULT NULL,
   `check_in_date` date DEFAULT NULL,
   `check_out_date` date DEFAULT NULL,
+  `number_of_persons` int DEFAULT NULL,
   `status` enum('confirmed','cancelled') DEFAULT 'confirmed',
   `total_price` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -164,4 +165,12 @@ VALUES
 (13, 'C3', 10, 20.00, 3),
 (14, 'C4', 10, 20.00, 3),
 (15, 'C5', 10, 20.00, 3);
+
+--
+-- Insertion des données pour la table `user`
+--
+
+INSERT INTO `user` (`id`, `email`, `password_hash`, `last_name`, `first_name`, `role`)
+VALUES
+(1, 'test@example.com', '$2y$10$wO3t4GqA3N1X5J6H7K8L9.B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2', 'Doe', 'John', 'visitor');
 

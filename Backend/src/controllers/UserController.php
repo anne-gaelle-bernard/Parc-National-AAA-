@@ -25,7 +25,7 @@ class UserController {
         $this->user->first_name = $data->first_name;
         $this->user->last_name = $data->last_name;
         $this->user->email = $data->email;
-        $this->user->password_hash = $data->password;
+        $this->user->password_hash = password_hash($data->password, PASSWORD_BCRYPT);
 
         if ($this->user->findByEmail()) {
             return ["status" => "error", "message" => "Cet email est déjà utilisé."];

@@ -77,8 +77,8 @@ $database = new Database();
 
 $api = new CampingAPI();
 
-if (isset($_GET['id'])) {
-    $api->getCampingDetails($_GET['id']);
+if (isset($_GET['camping_id'])) {
+    $api->getCampingDetails($_GET['camping_id']);
 } else {
     $api->getAllCampings();
 }
