@@ -55,6 +55,7 @@ body {
   position: relative;
   border-radius: 20px;
   overflow: hidden;
+  align-items: center;
 }
 
 .card img {
