@@ -92,3 +92,5 @@ var map = L.map('map').setView([43.21, 5.45], 12);
     calanquesLayers['Easy'].addTo(map);
     calanquesLayers['Medium'].addTo(map);
     calanquesLayers['Hard'].addTo(map);
+
+    // Ajouter toutes les couches ressources par défaut
