@@ -210,15 +210,24 @@ export function setupReservationPageLogic(container) {
 
         if (response.ok && result.status === 'success') {
           showToast("Réservation créée avec succès !", "success");
-          const confirmationUrl = `/Parc-National-AAA-/Frontend/confirmation.html?` +
-            `reservation_id=${result.reservation_id}&` +
-            `total_price=${totalPrice}&` +
-            `camping_name=${encodeURIComponent(campingNameFromUrl || "Camping inconnu")}&` +
-            `check_in_date=${checkInDate}&` +
-            `check_out_date=${checkOutDate}&` +
-            `number_of_persons=${numberOfPersons}`;
+          const basePath = '/Parc-National-AAA-'; // Assurez-vous que cela correspond au basePath dans main.js
+          const confirmationUrl = `${basePath}/confirmation`; // Utiliser le chemin défini dans le routeur
 
-          history.pushState({ page: 'confirmation', reservationDetails: result }, '', confirmationUrl);
+          history.pushState(
+            {
+              page: 'confirmation',
+              reservationDetails: {
+                reservation_id: result.reservation_id,
+                total_price: totalPrice,
+                camping_name: campingNameFromUrl || "Camping inconnu",
+                check_in_date: checkInDate,
+                check_out_date: checkOutDate,
+                number_of_persons: numberOfPersons,
+              },
+            },
+            '',
+            confirmationUrl
+          );
           window.dispatchEvent(new Event('popstate'));
         } else {
           showToast(`Erreur lors de la réservation: ${result.message}`, "error");

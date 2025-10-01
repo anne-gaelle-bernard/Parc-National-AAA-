@@ -14,14 +14,25 @@ const init = () => {
   // --- Router ---
   const router = () => {
     mainContent.innerHTML = ''; // Clear existing content
-    const path = window.location.pathname;
+    let path = window.location.pathname;
+    const basePath = '/Parc-National-AAA-';
+
+    // Strip basePath if present
+    if (path.startsWith(basePath)) {
+        path = path.substring(basePath.length);
+    }
+    // Ensure path starts with a slash, even if basePath was just '/' and stripped
+    if (!path.startsWith('/')) {
+        path = '/' + path;
+    }
+
     let pageContent = null;
     let pageLogicSetup = null;
 
     if (path === '/campings') {
         pageContent = createCampingsListPage();
         pageLogicSetup = setupCampingsListPageLogic;
-    } else if (path === '/reservation') {
+    } else if (path.startsWith('/reservation')) {
       pageContent = createReservationPage();
       pageLogicSetup = setupReservationPageLogic;
     } else if (path === '/confirmation') {
@@ -35,10 +46,15 @@ const init = () => {
     } else if (path === '/user-reservations') {
         pageContent = createUserReservationsPage(); // New function for user reservations
         pageLogicSetup = setupUserReservationsPageLogic; // New function to setup user reservations logic
-    } else {
+    } else if (path === '/') { // Handle root path
       // Default home page content
       pageContent = createHomePage(); // A new function to create the home page
       pageLogicSetup = setupHomePageLogic; // A new function to setup home page logic
+    } else {
+      // Fallback for unknown paths, maybe a 404 page or redirect to home
+      console.warn("Unhandled path:", path); // Log the actual unhandled path
+      pageContent = createHomePage(); // Redirect to home for unhandled paths
+      pageLogicSetup = setupHomePageLogic;
     }
 
     if (pageContent) {
@@ -50,6 +66,8 @@ const init = () => {
   };
 
   window.addEventListener('popstate', router);
+  // Appeler router une fois au chargement initial pour afficher le bon contenu
+  router(); 
   setupUIManager(toastContainer);
 };
 

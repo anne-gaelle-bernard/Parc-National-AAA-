@@ -251,8 +251,8 @@ export const setupUIManager = (mainContent) => {
   if (btnShowCampings) {
     btnShowCampings.addEventListener("click", (e) => {
       e.preventDefault();
-      // showToast("Cette section sera bientôt disponible.", "info"); // Option: afficher un message
-      // Ne rien faire ou ajouter une autre logique si désiré
+      history.pushState({ page: 'campings' }, '', '/campings');
+      window.dispatchEvent(new Event('popstate'));
       toggleHidden(burgerOverlay); // Fermer le menu burger
     });
   }

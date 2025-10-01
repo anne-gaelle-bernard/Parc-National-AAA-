@@ -14,6 +14,7 @@ try {
     $pdo->exec("TRUNCATE TABLE `camping`;");
     $pdo->exec("TRUNCATE TABLE `campsite`;");
     $pdo->exec("TRUNCATE TABLE `user`;");
+    $pdo->exec("TRUNCATE TABLE `reservation`;"); // Ajouter cette ligne
     $pdo->exec("SET FOREIGN_KEY_CHECKS = 1;");
 
     // Insertion des données pour la table `camping`

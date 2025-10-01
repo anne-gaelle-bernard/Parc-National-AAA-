@@ -111,7 +111,7 @@ $database = new Database();
 
         if ($stmt->execute()) {
             http_response_code(201);
-            echo json_encode(array("message" => "Reservation created successfully.", "reservation_id" => $this->conn->lastInsertId(), "total_price" => $totalPrice));
+            echo json_encode(array("status" => "success", "message" => "Reservation created successfully.", "reservation_id" => $this->conn->lastInsertId(), "total_price" => $totalPrice));
         } else {
             http_response_code(500);
             echo json_encode(array("message" => "Unable to create reservation."));

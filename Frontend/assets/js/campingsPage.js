@@ -20,9 +20,19 @@ export const createCampingsListPage = () => {
                     campingCard.innerHTML = `
                         <img src="${camping.image}" alt="${camping.name}" />
                         <div class="card-text">${camping.name}</div>
+                        <button class="reserve-button" data-camping-id="${camping.id}" data-camping-name="${camping.name}">Réserver</button>
                     `;
                     campingCard.addEventListener("click", () => {
                         history.pushState({ page: 'camping-details', campingId: camping.id }, '', `/camping-details/${camping.id}`);
+                        window.dispatchEvent(new Event('popstate'));
+                    });
+                    // Add event listener for the new reserve button
+                    const reserveButton = campingCard.querySelector('.reserve-button');
+                    reserveButton.addEventListener('click', (event) => {
+                        event.stopPropagation(); // Prevent the card click event from firing
+                        const campingId = event.target.dataset.campingId;
+                        const campingName = event.target.dataset.campingName;
+                        history.pushState({ page: 'reservation', campingId: campingId, campingName: campingName }, '', `/reservation?camping_id=${campingId}&camping_name=${encodeURIComponent(campingName)}`);
                         window.dispatchEvent(new Event('popstate'));
                     });
                     dynamicCampingsListContainer.appendChild(campingCard);
