@@ -10,8 +10,15 @@ document.querySelector('.logo').addEventListener('click', () => {
   window.location.href = 'index.html';
 });
 
+// Icône utilisateur
 document.getElementById('btn-login').addEventListener('click', () => {
   if (isLoggedIn) {
+    // Fermer menu burger s’il est ouvert
+    if (!burgerOverlay.classList.contains('hidden')) {
+      burgerOverlay.classList.add('hidden');
+    }
+
+    // Ouvrir overlay user
     userOverlay.classList.remove('hidden');
   } else {
     modalLogin.classList.remove('hidden');
@@ -19,11 +26,26 @@ document.getElementById('btn-login').addEventListener('click', () => {
 });
 
 document.getElementById('btn-menu').addEventListener('click', () => {
-    if (!userOverlay.classList.contains('hidden')) {
-        userOverlay.classList.add('hidden');
-    }
+  // Fermer overlay utilisateur si ouvert
+  if (!userOverlay.classList.contains('hidden')) {
+    userOverlay.classList.add('hidden');
+  }
+
+  // Fermer modale login si ouverte
+  if (!modalLogin.classList.contains('hidden')) {
+    modalLogin.classList.add('hidden');
+  }
+
+  // Fermer modale register si ouverte
+  if (!modalRegister.classList.contains('hidden')) {
+    modalRegister.classList.add('hidden');
+  }
+
+  // Ouvrir le menu burger
   burgerOverlay.classList.remove('hidden');
 });
+
+
 
 
 document.getElementById('close-user-overlay').addEventListener('click', () => {
@@ -53,14 +75,11 @@ function showToast(message, type = "success") {
 
   container.appendChild(toast);
 
-  // Disparition après 3 secondes
   setTimeout(() => {
     toast.style.animation = "slide-out 0.5s forwards";
     toast.addEventListener("animationend", () => toast.remove());
   }, 3000);
 }
-
-
 
 
 document.getElementById('btn-login-submit').addEventListener('click', () => {
@@ -100,7 +119,7 @@ document.getElementById('btn-register-submit').addEventListener('click', () => {
 })
   .then(async res => {
     const text = await res.text();
-    console.log("Réponse brute :", text);  // <--- ajoute ça
+    console.log("Réponse brute :", text); 
     try {
       return JSON.parse(text);
     } catch (err) {
@@ -158,4 +177,13 @@ window.addEventListener('DOMContentLoaded', () => {
         userData = null;
       }
     });
+});
+
+// Fermer les modales manuellement
+document.getElementById('close-login-modal').addEventListener('click', () => {
+  modalLogin.classList.add('hidden');
+});
+
+document.getElementById('close-register-modal').addEventListener('click', () => {
+  modalRegister.classList.add('hidden');
 });
