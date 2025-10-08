@@ -12,7 +12,6 @@ export function createConfirmationPage(reservationDetails) {
       <p><strong>Nombre de personnes:</strong> <span id="number-of-persons">${reservationDetails.number_of_persons || 'N/A'}</span></p>
       <p><strong>Prix total:</strong> <span id="total-price">${reservationDetails.total_price ? reservationDetails.total_price + ' €' : 'N/A'}</span></p>
 
-      <button id="cancel-reservation-btn">Annuler la réservation</button>
       <button id="back-to-home-btn">Retour à l'accueil</button>
     </section>
   `;
@@ -39,15 +38,6 @@ export function createConfirmationPage(reservationDetails) {
 }
 
 export function setupConfirmationPageLogic(container) {
-  const cancelBtn = container.querySelector('#cancel-reservation-btn');
-  if (cancelBtn) {
-    cancelBtn.addEventListener('click', () => {
-      alert('Réservation annulée !'); // Placeholder for actual cancellation logic
-      history.pushState({ page: 'home' }, '', '/');
-      window.dispatchEvent(new Event('popstate'));
-    });
-  }
-
   const backToHomeBtn = container.querySelector('#back-to-home-btn');
   if (backToHomeBtn) {
     backToHomeBtn.addEventListener('click', () => {

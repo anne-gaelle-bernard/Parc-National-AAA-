@@ -16,10 +16,8 @@ export const createHomePage = () => {
     container.querySelectorAll('.card').forEach((card, index) => {
         card.addEventListener('click', () => {
             if (index === 0) {
-                // showToast("Logique pour découvrir les parcs (à implémenter).", "info");
-                // Here you would navigate to a page showing park details, or trigger a modal
-                history.pushState({ page: 'parks' }, '', '/parks'); // Example navigation
-                window.dispatchEvent(new Event('popstate'));
+                // Ouvrir la carte Leaflet (page autonome)
+                window.location.href = '/Parc-National-AAA-/map.html';
             } else if (index === 1) {
                 // Désactiver la redirection de la carte 'Réserver' pour n'utiliser que le lien du menu burger
                 // history.pushState({ page: 'campings' }, '', '/campings');

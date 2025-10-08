@@ -187,8 +187,22 @@ export function setupReservationPageLogic(container) {
         return;
       }
 
-      // Assumons que l'ID utilisateur est géré via la session côté serveur ou est un ID fixe pour l'instant
-      const userId = 1; 
+      // Récupérer l'utilisateur connecté depuis la session
+      let userId = null;
+      try {
+        const sessionRes = await fetch('/Parc-National-AAA-/Backend/api/check-session.php');
+        const session = await sessionRes.json();
+        if (sessionRes.ok && session.loggedIn && session.user && session.user.id) {
+          userId = session.user.id;
+        } else {
+          showToast("Veuillez vous connecter pour effectuer une réservation.", "error");
+          return;
+        }
+      } catch (err) {
+        console.error('Erreur lors de la vérification de session:', err);
+        showToast("Impossible de vérifier votre session. Réessayez.", "error");
+        return;
+      }
 
       try {
         const response = await fetch("/Parc-National-AAA-/Backend/api/reservations.php", {
