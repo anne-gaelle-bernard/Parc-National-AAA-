@@ -1,5 +1,5 @@
 import { showToast } from './uiManager.js';
-import { userService } from './userService.js';
+import { userService } from '../../services/userService.js';
 
 export const createLoginPage = () => {
   const container = document.createElement('div');

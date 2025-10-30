@@ -1,4 +1,4 @@
-import { showToast } from '/Parc-National-AAA-/Frontend/assets/js/main.js';
+import { showToast } from '/Parc-National-AAA-/Frontend/assets/js/uiManager.js';
 
 export class UserReservationsPage {
     constructor(containerId, userId) {
