@@ -6,6 +6,8 @@ import { createCampingsListPage, setupCampingsListPageLogic } from './campingsPa
 import { createCampingDetailsPage, setupCampingDetailsPageLogic } from './campingDetailsPage.js';
 import { createUserReservationsPage, setupUserReservationsPageLogic } from './userReservationsPage.js';
 import { setupUIManager } from './uiManager.js';
+import { createLoginPage, setupLoginPageLogic } from './loginPage.js';
+import { createRegisterPage, setupRegisterPageLogic } from './registerPage.js';
 
 const init = () => {
   const toastContainer = document.getElementById("toast-container");
@@ -46,6 +48,12 @@ const init = () => {
     } else if (path === '/user-reservations') {
         pageContent = createUserReservationsPage(); // New function for user reservations
         pageLogicSetup = setupUserReservationsPageLogic; // New function to setup user reservations logic
+    } else if (path === '/login') {
+        pageContent = createLoginPage();
+        pageLogicSetup = setupLoginPageLogic;
+    } else if (path === '/register') {
+        pageContent = createRegisterPage();
+        pageLogicSetup = setupRegisterPageLogic;
     } else if (path === '/') { // Handle root path
       // Default home page content
       pageContent = createHomePage(); // A new function to create the home page
