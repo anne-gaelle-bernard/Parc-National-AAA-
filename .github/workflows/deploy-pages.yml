@@ -1,0 +1,46 @@
+name: Deploy Frontend to GitHub Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Prepare Pages artifact
+        run: |
+          set -e
+          mkdir -p dist
+          # Keep Frontend folder structure so paths like /Frontend/assets/... work
+          cp -r Frontend dist/Frontend
+          # Include root static entry points
+          [ -f index.html ] && cp index.html dist/index.html || true
+          [ -f map.html ] && cp map.html dist/map.html || true
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

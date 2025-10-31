@@ -1,29 +1,47 @@
 import js from '@eslint/js'
 import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  // Ignore common build and vendor directories globally
+  globalIgnores(['dist', 'node_modules', 'vendor']),
+
+  // Frontend/browser JS
   {
-    files: ['**/*.{js,jsx}'],
-    extends: [
-      js.configs.recommended,
-      reactHooks.configs['recommended-latest'],
-      reactRefresh.configs.vite,
-    ],
+    files: ['Frontend/**/*.{js,jsx}', '**/*.{js,jsx}'],
+    extends: [js.configs.recommended],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
       parserOptions: {
         ecmaVersion: 'latest',
-        ecmaFeatures: { jsx: true },
         sourceType: 'module',
       },
     },
     rules: {
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+    },
+  },
+
+  // Node/Tooling JS (overrides for matching files)
+  {
+    files: [
+      'eslint.config.js',
+      '**/*.config.js',
+      'Backend/**/*.js',
+    ],
+    extends: [js.configs.recommended],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.node,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+      },
+    },
+    rules: {
+      // Allow console in Node context
+      'no-console': 'off',
     },
   },
 ])
