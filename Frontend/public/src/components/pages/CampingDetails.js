@@ -1,4 +1,4 @@
-import { showToast } from '/Parc-National-AAA-/Frontend/assets/js/main.js';
+import { showToast } from '../../../assets/js/uiManager.js';
 
 const getCampingImageUrl = (campingName) => {
     const images = {
