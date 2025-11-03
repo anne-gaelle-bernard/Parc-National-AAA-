@@ -5,6 +5,7 @@ import { createHomePage, setupHomePageLogic } from './homePage.js';
 import { createCampingsListPage, setupCampingsListPageLogic } from './campingsPage.js';
 import { createCampingDetailsPage, setupCampingDetailsPageLogic } from './campingDetailsPage.js';
 import { createUserReservationsPage, setupUserReservationsPageLogic } from './userReservationsPage.js';
+import { createResourcesPage, setupResourcesPageLogic } from './resourcesPage.js';
 import { setupUIManager } from './uiManager.js';
 
 const init = () => {
@@ -46,6 +47,9 @@ const init = () => {
     } else if (path === '/user-reservations') {
         pageContent = createUserReservationsPage(); // New function for user reservations
         pageLogicSetup = setupUserReservationsPageLogic; // New function to setup user reservations logic
+    } else if (path === '/ressources-naturelles') {
+        pageContent = createResourcesPage(); // Page ressources naturelles
+        pageLogicSetup = setupResourcesPageLogic;
     } else if (path === '/') { // Handle root path
       // Default home page content
       pageContent = createHomePage(); // A new function to create the home page

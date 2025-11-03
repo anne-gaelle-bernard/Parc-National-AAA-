@@ -59,7 +59,7 @@ body {
 }
 
 #btn-login, #btn-menu {
-  width: 30px;
+  width: 45px;
   transition: var(--transition);
   border-radius: 8px;
   padding: 4px;
@@ -71,12 +71,38 @@ body {
 }
 
 .main-content {
-  padding: 1rem;
+  padding: 2rem;
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  flex-direction: row;
+  gap: 3rem;
+  justify-content: center;
   align-items: center;
   margin-top: 80px;
+  min-height: calc(100vh - 80px);
+}
+
+/* Conteneur pour les cartes de la page d'accueil (JavaScript) */
+.home-cards-container {
+  display: flex;
+  flex-direction: row;
+  gap: 3rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* Responsive pour mobile */
+@media (max-width: 850px) {
+  .main-content {
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1.5rem;
+  }
+  
+  .home-cards-container {
+    flex-direction: column;
+    gap: 2rem;
+  }
 }
 
 .card {
@@ -87,6 +113,7 @@ body {
   transition: var(--transition);
   cursor: pointer;
   background: white;
+  flex-shrink: 0;
 }
 
 .card:hover {
@@ -95,9 +122,10 @@ body {
 }
 
 .card img {
-  width: 300px;
-  height: 300px;
+  width: 350px;
+  height: 350px;
   display: block;
+  object-fit: cover;
   border-radius: var(--border-radius);
   transition: var(--transition);
 }
@@ -336,6 +364,7 @@ body {
   padding: 0.8rem 1.5rem 0.8rem 2.5rem;
   transition: var(--transition);
   border-radius: 8px;
+  cursor: pointer;
 }
 
 .burger-menu .submenu:hover {
@@ -472,76 +501,195 @@ body {
 
 /* Styles for profile section (previously in profile.css) */
 #profile-section {
-    max-width: 850px;
-    margin: 2.5em auto;
-    padding: 2.5em;
+    max-width: 950px;
+    margin: 2rem auto;
+    padding: 0;
     background: white;
-    border-radius: 20px;
-    box-shadow: var(--card-shadow);
+    border-radius: 28px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+    border: 2px solid rgba(102, 126, 234, 0.15);
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+#profile-section:hover {
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+}
+
+/* Header du profil avec gradient */
+#profile-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: var(--bg-gradient);
+    z-index: 0;
+}
+
+/* Icône utilisateur ou avatar */
+#profile-section::after {
+    content: '👤';
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 4rem;
+    background: white;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    border: 4px solid white;
+    z-index: 1;
 }
 
 #profile-section h1,
 #profile-section h2 {
     color: var(--text-dark);
-    margin-bottom: 1.2em;
+    margin-bottom: 1.5em;
     text-align: center;
     font-weight: 700;
+    position: relative;
+    z-index: 2;
 }
 
 #profile-section h1 {
-    font-size: 2rem;
+    font-size: 2.5rem;
+    color: white;
+    margin-top: 0;
+    padding: 2rem 2rem 5rem 2rem;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+#profile-section h2 {
+    font-size: 1.8rem;
     background: var(--bg-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    padding: 0 2rem;
+}
+
+.profile-details {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.03) 0%, rgba(255, 255, 255, 1) 100%);
+    padding: 3rem 2.5rem 2rem 2.5rem;
+    margin-top: 60px;
+    border-radius: 0;
+    border: none;
+    position: relative;
+    z-index: 2;
 }
 
 .profile-details p {
     font-size: 1.15em;
-    margin-bottom: 1em;
-    padding: 12px;
-    background: #f9fafb;
-    border-radius: 8px;
+    margin-bottom: 1.5em;
+    padding: 1.3rem 1.8rem;
+    background: white;
+    border-radius: 16px;
     color: var(--text-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid #f3f4f6;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-details p::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: var(--bg-gradient);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.profile-details p:hover {
+    transform: translateX(8px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.15);
+    border-color: rgba(102, 126, 234, 0.2);
+}
+
+.profile-details p:hover::before {
+    opacity: 1;
 }
 
 .profile-details strong {
     color: var(--text-light);
     font-weight: 600;
+    flex: 0 0 40%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.profile-details strong::before {
+    content: '•';
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.profile-details span {
+    color: var(--primary-color);
+    font-weight: 600;
+    flex: 1;
+    text-align: right;
+    font-size: 1.1em;
 }
 
 #edit-profile-button {
     display: block;
     width: fit-content;
-    margin: 1.8em auto;
-    padding: 1em 2em;
+    margin: 2.5rem auto 3rem auto;
+    padding: 1.3em 3em;
     background: var(--bg-gradient);
     color: white;
     border: none;
-    border-radius: 12px;
+    border-radius: 16px;
     cursor: pointer;
-    font-size: 1.05em;
+    font-size: 1.15em;
     font-weight: 600;
     transition: var(--transition);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+#edit-profile-button::before {
+    content: '✏️';
+    margin-right: 0.5rem;
 }
 
 #edit-profile-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.45);
 }
 
 #edit-profile-form,
 #change-password-form {
     display: flex;
     flex-direction: column;
-    gap: 1.2em;
-    margin-top: 2em;
-    padding: 2em;
-    border: none;
-    border-radius: var(--border-radius);
-    background: linear-gradient(to bottom, #f9fafb 0%, #ffffff 100%);
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
+    gap: 1.5em;
+    margin-top: 2.5em;
+    padding: 2.5em;
+    border: 2px solid rgba(102, 126, 234, 0.1);
+    border-radius: 20px;
+    background: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 #edit-profile-form label,
@@ -549,17 +697,18 @@ body {
     font-weight: 600;
     color: var(--text-dark);
     margin-bottom: -8px;
+    font-size: 1.05rem;
 }
 
 #edit-profile-form input[type="text"],
 #edit-profile-form input[type="email"],
 #change-password-form input[type="password"] {
-    padding: 0.9em 1em;
+    padding: 1em 1.2em;
     border: 2px solid #e5e7eb;
     border-radius: 12px;
     font-size: 1em;
     transition: var(--transition);
-    background: white;
+    background: #f9fafb;
 }
 
 #edit-profile-form input[type="text"]:focus,
@@ -567,7 +716,9 @@ body {
 #change-password-form input[type="password"]:focus {
     outline: none;
     border-color: var(--primary-color);
+    background: white;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    transform: translateY(-2px);
 }
 
 #edit-profile-form button[type="submit"],
@@ -613,4 +764,923 @@ body {
 #close-profile-section:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+/* Container pour la section profil */
+.profile-details-section {
+    animation: fadeInProfile 0.4s ease-out;
+}
+
+@keyframes fadeInProfile {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive pour le profil */
+@media (max-width: 768px) {
+    #profile-section {
+        margin: 1rem;
+        border-radius: 20px;
+    }
+    
+    #profile-section::after {
+        font-size: 3rem;
+        width: 80px;
+        height: 80px;
+        top: 40px;
+    }
+    
+    #profile-section h1 {
+        font-size: 2rem;
+        padding: 1.5rem 1rem 4rem 1rem;
+    }
+    
+    .profile-details {
+        padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+        margin-top: 50px;
+    }
+    
+    .profile-details p {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 1.2rem;
+    }
+    
+    .profile-details strong {
+        flex: none;
+        width: 100%;
+    }
+    
+    .profile-details span {
+        text-align: left;
+        width: 100%;
+        font-size: 1.05em;
+    }
+    
+    #edit-profile-button {
+        width: calc(100% - 3rem);
+        margin: 2rem 1.5rem;
+        font-size: 1.05em;
+    }
+}
+
+/* ===== STYLES PAGES CAMPINGS, RÉSERVATION & CONFIRMATION ===== */
+
+/* Page Campings - Titre centré */
+.grid-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.grid-container + h2,
+h2:first-child {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  background: var(--bg-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Amélioration des cartes de camping */
+.camping-card {
+  transition: var(--transition);
+  position: relative;
+  border: 2px solid rgba(102, 126, 234, 0.1);
+}
+
+.camping-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: var(--transition);
+}
+
+.camping-card:hover img {
+  transform: scale(1.1);
+}
+
+.camping-card .card-text {
+  padding: 1.2rem;
+  font-size: 1.2rem;
+  background: linear-gradient(to bottom, #f9fafb, white);
+}
+
+/* Bouton Réserver dans les cartes */
+.reserve-button {
+  width: calc(100% - 2rem);
+  margin: 0 1rem 1rem 1rem;
+  padding: 0.9rem 1.5rem;
+  background: var(--bg-gradient);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.reserve-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Message de paiement en espèces - Page Réservation */
+.payment-notice {
+  max-width: 900px;
+  width: 95%;
+  margin: 0 auto 2rem !important;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-radius: 16px;
+  border: 3px solid #fbbf24;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  box-shadow: 0 6px 20px rgba(251, 191, 36, 0.3);
+  animation: slideDown 0.5s ease-out;
+}
+
+.notice-icon {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+}
+
+.notice-content {
+  flex: 1;
+}
+
+.notice-content strong {
+  display: block;
+  font-size: 1.2rem;
+  color: #92400e;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.notice-content p {
+  font-size: 1.05rem;
+  color: #78350f;
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .payment-notice {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+  }
+  
+  .notice-icon {
+    font-size: 2rem;
+  }
+  
+  .notice-content strong {
+    font-size: 1.1rem;
+  }
+  
+  .notice-content p {
+    font-size: 1rem;
+  }
+}
+
+/* Page Réservation - Formulaire moderne */
+.reservation-form {
+  max-width: 900px;
+  width: 95%;
+  margin: 0 auto !important;
+  padding: 2.5rem 3rem;
+  background: white;
+  border-radius: 24px;
+  box-shadow: var(--card-shadow);
+  border: 2px solid rgba(102, 126, 234, 0.1);
+}
+
+.reservation-form h2 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+  background: var(--bg-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.form-group {
+  margin-bottom: 1.8rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 1.05rem;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: var(--transition);
+  background: #f9fafb;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group p {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  border-radius: 12px;
+  text-align: center;
+}
+
+.form-group p span {
+  color: var(--primary-color);
+  font-size: 1.4rem;
+}
+
+#camping-reservation-form button[type="submit"],
+#back-to-home,
+#back-to-home-from-campings-list-dynamic,
+#back-to-home-btn {
+  width: 100%;
+  padding: 1.2rem 2rem;
+  margin-top: 1rem;
+  background: var(--bg-gradient);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+#camping-reservation-form button[type="submit"]:hover,
+#back-to-home:hover,
+#back-to-home-from-campings-list-dynamic:hover,
+#back-to-home-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+#back-to-home,
+#back-to-home-from-campings-list-dynamic {
+  max-width: 900px;
+  width: 95%;
+  margin: 1.5rem auto 2rem auto;
+  display: block;
+}
+
+/* Page Confirmation */
+.confirmation-details {
+  max-width: 1000px;
+  width: 95%;
+  margin: 0 auto;
+  padding: 2.5rem 3rem;
+  background: white;
+  border-radius: 24px;
+  box-shadow: var(--card-shadow);
+  border: 2px solid rgba(16, 185, 129, 0.2);
+  text-align: center;
+}
+
+.confirmation-details h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.confirmation-details > p:first-of-type {
+  font-size: 1.15rem;
+  color: var(--text-light);
+  margin-bottom: 2rem;
+}
+
+.confirmation-details p {
+  font-size: 1.1rem;
+  margin-bottom: 1.2rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 10px;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.confirmation-details p strong {
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.confirmation-details p span {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+/* Centrage vertical pour les pages de formulaire */
+.main-content:has(.reservation-form),
+.main-content:has(.confirmation-details) {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding: 0 !important;
+  padding-top: 5px !important;
+  margin-top: 80px !important;
+  min-height: auto !important;
+}
+
+/* Responsive pour les formulaires */
+@media (max-width: 768px) {
+  .reservation-form,
+  .confirmation-details {
+    padding: 2rem 1.5rem;
+    margin: 1rem;
+    max-width: 100%;
+  }
+  
+  .reservation-form h2,
+  .confirmation-details h2 {
+    font-size: 1.6rem;
+  }
+}
+
+/* ===== PAGE MES RÉSERVATIONS ===== */
+
+.user-reservations-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.user-reservations-page h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+  background: var(--bg-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.reservations-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.reservations-list > p {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--text-light);
+  padding: 3rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: var(--card-shadow);
+}
+
+.reservation-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: var(--card-shadow);
+  transition: var(--transition);
+  border: 2px solid rgba(102, 126, 234, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.reservation-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: var(--bg-gradient);
+}
+
+.reservation-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--card-shadow-hover);
+  border-color: rgba(102, 126, 234, 0.3);
+}
+
+.reservation-card h4 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  color: var(--text-dark);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  padding: 0.8rem;
+  border-radius: 10px;
+}
+
+.reservation-card p {
+  font-size: 1.05rem;
+  margin-bottom: 0.8rem;
+  color: var(--text-dark);
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.reservation-card p:last-of-type {
+  border-bottom: none;
+}
+
+.reservation-card p strong {
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+.cancel-reservation-btn {
+  width: 100%;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.cancel-reservation-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+.reservations-message {
+  text-align: center;
+  padding: 1rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+}
+
+.reservations-message.success {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+  color: #059669;
+  border: 2px solid rgba(16, 185, 129, 0.3);
+}
+
+.reservations-message.error {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+  color: #dc2626;
+  border: 2px solid rgba(239, 68, 68, 0.3);
+}
+
+.reservations-message.info {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(37, 99, 235, 0.1));
+  color: #2563eb;
+  border: 2px solid rgba(59, 130, 246, 0.3);
+}
+
+.toolbar {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.toolbar button {
+  padding: 1rem 2rem;
+  background: var(--bg-gradient);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+  min-width: 200px;
+}
+
+.toolbar button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+#refresh-reservations {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3) !important;
+}
+
+#refresh-reservations:hover {
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4) !important;
+}
+
+@media (max-width: 768px) {
+  .reservations-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .user-reservations-page {
+    padding: 1rem;
+  }
+  
+  .user-reservations-page h2 {
+    font-size: 2rem;
+  }
+  
+  .toolbar {
+    flex-direction: column;
+  }
+  
+  .toolbar button {
+    width: 100%;
+  }
+}
+
+/* ========================================
+   PAGE RESSOURCES NATURELLES
+   ======================================== */
+
+.resources-page {
+  padding: 0;
+  width: 100%;
+  background: linear-gradient(180deg, #f8fafc 0%, #e0f2fe 50%, #f0fdf4 100%);
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.resources-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 4rem 2rem 3rem;
+  text-align: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.resources-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,138.7C960,139,1056,117,1152,106.7C1248,96,1344,96,1392,96L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') bottom center/cover no-repeat;
+  opacity: 0.3;
+}
+
+.resources-header h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.resources-subtitle {
+  font-size: 1.3rem;
+  opacity: 0.95;
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.resources-intro {
+  max-width: 900px;
+  margin: -2rem auto 3rem;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.intro-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+  text-align: center;
+  border: 2px solid rgba(102, 126, 234, 0.1);
+  transition: var(--transition);
+}
+
+.intro-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+}
+
+.intro-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.intro-card p {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: #4b5563;
+}
+
+.resources-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.resource-category {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  transition: var(--transition);
+}
+
+.resource-category:hover {
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+}
+
+.category-header {
+  padding: 2rem;
+  background: white;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 5px solid;
+}
+
+.flora-header {
+  border-bottom-color: #10b981;
+}
+
+.fauna-header {
+  border-bottom-color: #f59e0b;
+}
+
+.marine-header {
+  border-bottom-color: #3b82f6;
+}
+
+.geology-header {
+  border-bottom-color: #8b5cf6;
+}
+
+.category-header h2 {
+  font-size: 2rem;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  font-weight: 700;
+  color: #1f2937 !important;
+  text-shadow: none;
+}
+
+.resource-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 2.5rem;
+}
+
+.resource-item {
+  padding: 2rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
+  border-radius: 16px;
+  transition: var(--transition);
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.resource-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--bg-gradient);
+  transform: scaleX(0);
+  transition: var(--transition);
+}
+
+.resource-item:hover::before {
+  transform: scaleX(1);
+}
+
+.resource-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+  border-color: rgba(102, 126, 234, 0.3);
+}
+
+.resource-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.resource-item h3 {
+  font-size: 1.4rem;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.resource-item p {
+  font-size: 1.05rem;
+  color: #6b7280;
+  line-height: 1.7;
+  text-align: justify;
+}
+
+.resources-protection {
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 0 2rem;
+}
+
+.protection-card {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 10px 40px rgba(245, 158, 11, 0.2);
+  border: 3px solid #fbbf24;
+}
+
+.protection-card h2 {
+  font-size: 2.2rem;
+  color: #92400e;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  font-weight: 700;
+}
+
+.protection-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.protection-item {
+  background: white;
+  padding: 1.8rem;
+  border-radius: 14px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  transition: var(--transition);
+}
+
+.protection-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+
+.protection-emoji {
+  font-size: 2.5rem;
+  display: block;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.protection-item p {
+  font-size: 1.05rem;
+  color: #374151;
+  line-height: 1.7;
+}
+
+.protection-item strong {
+  color: #92400e;
+  font-weight: 700;
+}
+
+.resources-actions {
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 0 2rem 4rem;
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.action-button {
+  padding: 1.2rem 3rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: var(--transition);
+  min-width: 250px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.action-button.primary {
+  background: var(--bg-gradient);
+  color: white;
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.action-button.primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+}
+
+.action-button.secondary {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+.action-button.secondary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.5);
+}
+
+@media (max-width: 768px) {
+  .resources-header h1 {
+    font-size: 2rem;
+  }
+  
+  .resources-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .intro-card {
+    padding: 2rem;
+  }
+  
+  .resource-items {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+  
+  .protection-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .resources-actions {
+    flex-direction: column;
+  }
+  
+  .action-button {
+    width: 100%;
+  }
+  
+  .category-header h2 {
+    font-size: 1.6rem;
+  }
 }
