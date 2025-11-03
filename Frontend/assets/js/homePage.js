@@ -19,9 +19,9 @@ export const createHomePage = () => {
                 // Ouvrir la carte Leaflet (page autonome)
                 window.location.href = '/Parc-National-AAA-/map.html';
             } else if (index === 1) {
-                // Désactiver la redirection de la carte 'Réserver' pour n'utiliser que le lien du menu burger
-                // history.pushState({ page: 'campings' }, '', '/campings');
-                // window.dispatchEvent(new Event('popstate'));
+                // Rediriger vers la page des campings pour réserver
+                history.pushState({ page: 'campings' }, '', '/Parc-National-AAA-/campings');
+                window.dispatchEvent(new Event('popstate'));
             }
         });
     });
