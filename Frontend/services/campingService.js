@@ -1,7 +1,7 @@
 export const campingService = {
     async getCampingDetails(campingId) {
         try {
-            const response = await fetch(`/Parc-National-AAA-/Backend/api/get-camping-details.php?id=${campingId}`);
+            const response = await fetch(`/Backend/api/get-camping-details.php?id=${campingId}`);
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || "Erreur lors de la récupération des détails du camping.");

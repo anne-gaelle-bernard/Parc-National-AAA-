@@ -16,7 +16,7 @@ const init = () => {
   const router = () => {
     mainContent.innerHTML = ''; // Clear existing content
     let path = window.location.pathname;
-    const basePath = '/Parc-National-AAA-';
+    const basePath = '';
 
     // Strip basePath if present
     if (path.startsWith(basePath)) {
