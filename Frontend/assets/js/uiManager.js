@@ -43,6 +43,8 @@ export const setupUIManager = (mainContent) => {
   const closeBurgerOverlay = document.getElementById("close-burger-overlay");
   const btnShowCampings = document.getElementById("btn-show-campings");
   const btnReserveCampings = document.getElementById("btn-reserve-campings");
+  const btnShowResources = document.getElementById("btn-show-resources");
+  const btnShowCampingsPresentation = document.getElementById("btn-show-campings-presentation");
 
   let isLoggedIn = false;
 
@@ -257,6 +259,24 @@ export const setupUIManager = (mainContent) => {
     });
   }
 
+  if (btnShowResources) {
+    btnShowResources.addEventListener("click", (e) => {
+      e.preventDefault();
+      history.pushState({ page: 'ressources-naturelles' }, '', '/ressources-naturelles');
+      window.dispatchEvent(new Event('popstate'));
+      toggleHidden(burgerOverlay); // Fermer le menu burger
+    });
+  }
+
+  if (btnShowCampingsPresentation) {
+    btnShowCampingsPresentation.addEventListener("click", (e) => {
+      e.preventDefault();
+      history.pushState({ page: 'campings' }, '', '/campings');
+      window.dispatchEvent(new Event('popstate'));
+      toggleHidden(burgerOverlay); // Fermer le menu burger
+    });
+  }
+
   if (btnReserveCampings) {
     btnReserveCampings.addEventListener("click", (e) => {
       e.preventDefault();
@@ -301,6 +321,7 @@ export const setupUIManager = (mainContent) => {
               <p><strong>Nom:</strong> ${result.user.last_name}</p>
               <p><strong>Email:</strong> ${result.user.email}</p>
               <button id="btn-change-password" class="btn btn-secondary mt-3">Changer le mot de passe</button>
+              <button id="btn-back-to-home-from-profile" class="btn btn-primary mt-3">Retour à l'accueil</button>
             `;
             profileDetailsContainer.classList.remove("hidden"); // Afficher les détails du profil
 
@@ -331,9 +352,18 @@ export const setupUIManager = (mainContent) => {
             profileDetailsContainer.appendChild(changePasswordFormContainer);
 
             const btnChangePassword = document.getElementById("btn-change-password");
+            const btnBackToHomeFromProfile = document.getElementById("btn-back-to-home-from-profile");
             const btnCancelChangePassword = document.getElementById("btn-cancel-change-password");
             const changePasswordForm = document.getElementById("change-password-form");
             const changePasswordMessage = document.getElementById("change-password-message");
+
+            if (btnBackToHomeFromProfile) {
+              btnBackToHomeFromProfile.addEventListener("click", () => {
+                toggleHidden(userOverlay);
+                history.pushState({ page: 'home' }, '', '/');
+                window.dispatchEvent(new Event('popstate'));
+              });
+            }
 
             if (btnChangePassword) {
               btnChangePassword.addEventListener("click", () => {

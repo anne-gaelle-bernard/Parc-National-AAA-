@@ -3,7 +3,7 @@
 export const createCampingsListPage = () => {
     const container = document.createElement('div');
     container.innerHTML = `
-        <h2>Nos Campings</h2>
+        <h2 style="text-align: center; font-size: 2.5rem; font-weight: 700; margin: 2rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Nos Campings</h2>
         <div id="campings-list-dynamic" class="grid-container"></div>
         <button id="back-to-home-from-campings-list-dynamic">Retour à l'accueil</button>
     `;

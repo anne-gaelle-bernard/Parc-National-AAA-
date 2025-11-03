@@ -2,6 +2,7 @@
 
 export const createHomePage = () => {
     const container = document.createElement('div');
+    container.className = 'home-cards-container';
     container.innerHTML = `
         <section class="card">
             <img src="/Parc-National-AAA-/Frontend/assets/img/photo-parc.png" alt="Parc National" />

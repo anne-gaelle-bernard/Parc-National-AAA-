@@ -5,7 +5,15 @@ import { showToast } from './uiManager.js'; // Importation corrigée
 export function createReservationPage() {
   const mainContent = document.createElement('main');
   mainContent.className = 'main-content';
+  mainContent.style.cssText = 'display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 10px; margin-top: 80px;';
   mainContent.innerHTML = `
+    <div class="payment-notice">
+      <span class="notice-icon">⚠️</span>
+      <div class="notice-content">
+        <strong>Message Important :</strong>
+        <p>Les paiements ne se feront qu'en espèces et sur place.</p>
+      </div>
+    </div>
     <section class="reservation-form">
       <h2 id="camping-name-display">Réserver votre emplacement de camping</h2>
       <form id="camping-reservation-form">
