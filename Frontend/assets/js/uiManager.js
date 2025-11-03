@@ -446,7 +446,7 @@ export const setupUIManager = (mainContent) => {
   }
 
   // Check session status on page load
-  fetch('/Parc-National-AAA-/Backend/api/check-session.php')
+  fetch('/Backend/api/check-session.php')
     .then(response => response.json())
     .then(data => {
       isLoggedIn = data.loggedIn;

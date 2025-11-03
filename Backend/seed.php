@@ -42,8 +42,14 @@ try {
 (15, 'C5', 10, 20.00, 3);");
 
     // Insertion des données pour la table `user`
-    $pdo->exec("INSERT INTO `user` (`id`, `email`, `password_hash`, `last_name`, `first_name`, `role`) VALUES
-(1, 'test@example.com', '$2y\$10\$wO3t4GqA3N1X5J6H7K8L9.B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2', 'Doe', 'John', 'visitor');");
+    $stmt = $pdo->prepare("INSERT INTO `user` (`id`, `email`, `password_hash`, `last_name`, `first_name`, `role`) VALUES (1, :email, :password_hash, :last_name, :first_name, :role)");
+    $stmt->execute([
+        ':email' => 'test@example.com',
+        ':password_hash' => '$2y$10$B7z/SW1lJJ6N97oVnt.MIOvNSEcqEjLwaiC0l8GGQeJaGmTMGcUgu',
+        ':last_name' => 'Doe',
+        ':first_name' => 'John',
+        ':role' => 'visitor',
+    ]);
 
     echo "Database seeded successfully!
 ";

@@ -190,7 +190,7 @@ export function setupReservationPageLogic(container) {
       // Récupérer l'utilisateur connecté depuis la session
       let userId = null;
       try {
-        const sessionRes = await fetch('/Parc-National-AAA-/Backend/api/check-session.php');
+        const sessionRes = await fetch('/Backend/api/check-session.php');
         const session = await sessionRes.json();
         if (sessionRes.ok && session.loggedIn && session.user && session.user.id) {
           userId = session.user.id;
@@ -205,7 +205,7 @@ export function setupReservationPageLogic(container) {
       }
 
       try {
-        const response = await fetch("/Parc-National-AAA-/Backend/api/reservations.php", {
+        const response = await fetch("/Backend/api/reservations.php", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

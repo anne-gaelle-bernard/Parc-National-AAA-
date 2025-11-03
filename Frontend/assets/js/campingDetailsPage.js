@@ -2,7 +2,7 @@
 
 export const createCampingDetailsPage = (campingId) => {
     // Fetch camping details from backend
-    fetch(`/Parc-National-AAA-/Backend/api/get-camping-details.php?id=${campingId}`)
+    fetch(`/Backend/api/get-camping-details.php?id=${campingId}`)
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success' && data.camping) {

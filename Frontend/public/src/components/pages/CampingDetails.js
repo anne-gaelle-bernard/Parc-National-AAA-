@@ -20,7 +20,7 @@ export class CampingDetailsPage {
 
     async fetchCampingDetails() {
         try {
-            const response = await fetch(`http://localhost/Parc-National-AAA-/Backend/api/campings.php?id=${this.campingId}`);
+            const response = await fetch(`/Backend/api/campings.php?id=${this.campingId}`);
             const data = await response.json();
             if (response.ok) {
                 this.campingData = data;

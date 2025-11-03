@@ -9,7 +9,7 @@ export class UserReservationsPage {
 
     async fetchUserReservations() {
         try {
-            const response = await fetch(`http://localhost/Parc-National-AAA-/Backend/api/reservations.php?user_id=${this.userId}`);
+            const response = await fetch(`/Backend/api/reservations.php?user_id=${this.userId}`);
             const data = await response.json();
             if (response.ok) {
                 return data; // This will be an array of reservations

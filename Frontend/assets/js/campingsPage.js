@@ -10,7 +10,7 @@ export const createCampingsListPage = () => {
     const dynamicCampingsListContainer = container.querySelector('#campings-list-dynamic');
 
     // Fetch campings from backend
-    fetch('/Parc-National-AAA-/Backend/api/get-campings.php')
+    fetch('/Backend/api/get-campings.php')
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success' && data.campings) {
