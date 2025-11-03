@@ -6,14 +6,31 @@ import { createCampingsListPage, setupCampingsListPageLogic } from './campingsPa
 import { createCampingDetailsPage, setupCampingDetailsPageLogic } from './campingDetailsPage.js';
 import { createUserReservationsPage, setupUserReservationsPageLogic } from './userReservationsPage.js';
 import { createResourcesPage, setupResourcesPageLogic } from './resourcesPage.js';
-import { setupUIManager } from './uiManager.js';
+import { setupUIManager, showToast } from './uiManager.js';
 
 const init = () => {
   const toastContainer = document.getElementById("toast-container");
   const mainContent = document.querySelector(".main-content");
   
+  // Variable globale pour stocker l'état de connexion
+  let isUserLoggedIn = false;
+
+  // Vérifier la session au démarrage
+  const checkSession = async () => {
+    try {
+      const response = await fetch('/Parc-National-AAA-/Backend/api/check-session.php');
+      const data = await response.json();
+      isUserLoggedIn = !!data.loggedIn;
+      return isUserLoggedIn;
+    } catch (error) {
+      console.error("Erreur lors de la vérification de session:", error);
+      isUserLoggedIn = false;
+      return false;
+    }
+  };
+
   // --- Router ---
-  const router = () => {
+  const router = async () => {
     mainContent.innerHTML = ''; // Clear existing content
     let path = window.location.pathname;
     const basePath = '/Parc-National-AAA-';
@@ -25,6 +42,28 @@ const init = () => {
     // Ensure path starts with a slash, even if basePath was just '/' and stripped
     if (!path.startsWith('/')) {
         path = '/' + path;
+    }
+
+    // Vérifier la connexion pour toutes les pages sauf l'accueil
+    const isLoggedIn = await checkSession();
+    
+    // Pages protégées : tout sauf '/'
+    const protectedPages = ['/campings', '/reservation', '/confirmation', '/camping-details/', '/user-reservations', '/ressources-naturelles'];
+    const isProtectedPage = protectedPages.some(p => path.startsWith(p));
+
+    if (isProtectedPage && !isLoggedIn) {
+      // Bloquer l'accès et afficher le message
+      showToast("Vous devez être connecté pour accéder à cette page.", "error");
+      
+      // Ouvrir la modale de connexion
+      const modalLogin = document.getElementById('modal-login');
+      if (modalLogin && modalLogin.classList.contains('hidden')) {
+        modalLogin.classList.remove('hidden');
+      }
+      
+      // Rediriger vers l'accueil
+      history.pushState({ page: 'home' }, '', '/');
+      path = '/';
     }
 
     let pageContent = null;
