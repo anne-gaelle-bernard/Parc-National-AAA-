@@ -198,11 +198,16 @@ export function setupReservationPageLogic(container) {
       // Récupérer l'utilisateur connecté depuis la session
       let userId = null;
       try {
-        const sessionRes = await fetch('/Parc-National-AAA-/Backend/api/check-session.php');
+        const sessionRes = await fetch('/Parc-National-AAA-/Backend/api/check-session.php', {
+          credentials: 'include' // Envoyer les cookies de session
+        });
         const session = await sessionRes.json();
+        console.log('[DEBUG] Session check:', session); // Debug log
         if (sessionRes.ok && session.loggedIn && session.user && session.user.id) {
           userId = session.user.id;
+          console.log('[DEBUG] User ID récupéré:', userId);
         } else {
+          console.warn('[DEBUG] Utilisateur non connecté ou session invalide');
           showToast("Veuillez vous connecter pour effectuer une réservation.", "error");
           return;
         }
@@ -212,9 +217,11 @@ export function setupReservationPageLogic(container) {
         return;
       }
 
+      console.log('[DEBUG] Envoi POST réservation avec user_id:', userId);
       try {
         const response = await fetch("/Parc-National-AAA-/Backend/api/reservations.php", {
           method: "POST",
+          credentials: 'include', // Envoyer les cookies de session
           headers: {
             "Content-Type": "application/json",
           },
@@ -228,9 +235,14 @@ export function setupReservationPageLogic(container) {
           }),
         });
 
+        console.log('[DEBUG] Réponse POST status:', response.status);
+
+        console.log('[DEBUG] Réponse POST status:', response.status);
         const result = await response.json();
+        console.log('[DEBUG] Résultat POST:', result);
 
         if (response.ok && result.status === 'success') {
+          console.log('[DEBUG] Réservation créée, ID:', result.reservation_id);
           showToast("Réservation créée avec succès !", "success");
           const basePath = '/Parc-National-AAA-'; // Assurez-vous que cela correspond au basePath dans main.js
           const confirmationUrl = `${basePath}/confirmation`; // Utiliser le chemin défini dans le routeur

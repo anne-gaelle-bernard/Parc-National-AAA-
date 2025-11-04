@@ -1,1 +1,1 @@
-{"version":1,"defects":[],"times":{"UserTest::testUserModelHasExpectedProperties":2.057,"UserTest::testVerifyPassword":0.433,"VisitorTest::testDummy":0}}
+{"version":1,"defects":[],"times":{"UserTest::testUserModelHasExpectedProperties":1.319,"UserTest::testVerifyPassword":0.58,"VisitorTest::testDummy":0}}

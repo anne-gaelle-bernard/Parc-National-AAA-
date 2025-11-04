@@ -9,6 +9,10 @@ header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 require_once '../config/db.php';
+// Démarrer la session pour récupérer l'utilisateur connecté si nécessaire
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 class ReservationAPI {
     private $conn;
@@ -125,8 +129,8 @@ $database = new Database();
 
         if ($stmt->execute()) {
             if ($stmt->rowCount() > 0) {
-http_response_code(200);
-                echo json_encode(array("message" => "Reservation cancelled successfully."));
+                http_response_code(200);
+                echo json_encode(array("status" => "success", "message" => "Reservation cancelled successfully."));
             } else {
                 http_response_code(404);
                 echo json_encode(array("message" => "Reservation not found or already cancelled."));
@@ -180,8 +184,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         http_response_code(400);
         echo json_encode(array("message" => "Missing reservation_id for cancellation."));
     }
-} elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['user_id'])) {
-    $api->getUserReservations($_GET['user_id']);
+} elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    // Support: si aucun user_id n'est fourni, essayer de l'obtenir via la session
+    if (isset($_GET['user_id'])) {
+        $api->getUserReservations($_GET['user_id']);
+    } elseif (isset($_SESSION['user_id'])) {
+        $api->getUserReservations($_SESSION['user_id']);
+    } else {
+        http_response_code(400);
+        echo json_encode(array("message" => "Missing user_id and no active session."));
+    }
 } else {
     http_response_code(405); // Method Not Allowed
     echo json_encode(array("message" => "Method not allowed."));
