@@ -81,7 +81,10 @@ export const setupUserReservationsPageLogic = (container) => {
                 try {
                     const response = await fetch('/Parc-National-AAA-/Backend/api/reservations.php', {
                         method: 'DELETE',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                        },
                         body: JSON.stringify({ reservation_id: reservationId })
                     });
                     const result = await response.json();
@@ -104,17 +107,16 @@ export const setupUserReservationsPageLogic = (container) => {
     const loadReservations = async () => {
         setLoading(true);
         try {
-            // Get current user from session to retrieve user_id
-            const sessionRes = await fetch('/Parc-National-AAA-/Backend/api/check-session.php');
-            const session = await sessionRes.json();
-            if (!sessionRes.ok || !session.loggedIn || !session.user || !session.user.id) {
+            const authToken = localStorage.getItem('authToken');
+            if (!authToken) {
                 reservationsList.innerHTML = `<p>Veuillez vous connecter pour voir vos réservations.</p>`;
                 setMessage('Vous devez être connecté.', 'error');
                 return;
             }
 
-            const userId = session.user.id;
-            const res = await fetch(`/Parc-National-AAA-/Backend/api/reservations.php?user_id=${encodeURIComponent(userId)}`);
+            const res = await fetch('/Parc-National-AAA-/Backend/api/reservations.php', {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
             if (!res.ok) {
                 reservationsList.innerHTML = `<p>Impossible de charger vos réservations pour le moment.</p>`;
                 setMessage('Serveur indisponible. Réessayez plus tard.', 'error');

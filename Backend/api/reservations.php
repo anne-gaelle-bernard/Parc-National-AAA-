@@ -9,6 +9,7 @@ header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 require_once '../config/db.php';
+require_once __DIR__ . '/../src/middlewares/JwtMiddleware.php';
 
 class ReservationAPI {
     private $conn;
@@ -18,10 +19,9 @@ $database = new Database();
         $this->conn = $database->getConnection();
     }
 
-    public function createReservation($data) {
+    public function createReservation($data, $userId) {
         // Validate input
         if (
-            !isset($data->user_id) ||
             !isset($data->campsite_id) ||
             !isset($data->check_in_date) ||
             !isset($data->check_out_date) ||
@@ -32,7 +32,6 @@ $database = new Database();
             return;
         }
 
-        $userId = $data->user_id;
         $campsiteId = $data->campsite_id;
         $checkInDate = $data->check_in_date;
         $checkOutDate = $data->check_out_date;
@@ -118,10 +117,11 @@ $database = new Database();
         }
     }
 
-    public function cancelReservation($reservationId) {
-        $query = "UPDATE reservation SET status = 'cancelled' WHERE id = ?";
+    public function cancelReservation($reservationId, $userId) {
+        $query = "UPDATE reservation SET status = 'cancelled' WHERE id = ? AND user_id = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(1, $reservationId);
+        $stmt->bindParam(2, $userId);
 
         if ($stmt->execute()) {
             if ($stmt->rowCount() > 0) {
@@ -166,22 +166,28 @@ http_response_code(200);
     }
 }
 
+// Every action below acts on the authenticated user only; the client can
+// no longer pass an arbitrary user_id to read, create, or cancel
+// someone else's reservations.
+$authPayload = JwtMiddleware::authenticate();
+$authenticatedUserId = $authPayload['sub'];
+
 $api = new ReservationAPI();
 
 // Handle POST request for creating a reservation
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents("php://input"));
-    $api->createReservation($data);
+    $api->createReservation($data, $authenticatedUserId);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     $data = json_decode(file_get_contents("php://input"));
     if (isset($data->reservation_id)) {
-        $api->cancelReservation($data->reservation_id);
+        $api->cancelReservation($data->reservation_id, $authenticatedUserId);
     } else {
         http_response_code(400);
         echo json_encode(array("message" => "Missing reservation_id for cancellation."));
     }
-} elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['user_id'])) {
-    $api->getUserReservations($_GET['user_id']);
+} elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $api->getUserReservations($authenticatedUserId);
 } else {
     http_response_code(405); // Method Not Allowed
     echo json_encode(array("message" => "Method not allowed."));

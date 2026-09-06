@@ -117,17 +117,20 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // For now, assume a logged-in user with ID 1
-    const userId = 1; 
+    const authToken = localStorage.getItem("authToken");
+    if (!authToken) {
+      alert("Veuillez vous connecter pour effectuer une réservation.");
+      return;
+    }
 
     try {
       const response = await fetch("/Parc-National-AAA-/Backend/api/reservations.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${authToken}`,
         },
         body: JSON.stringify({
-          user_id: userId,
           camping_id: campingId,
           check_in_date: arrivalDate,
           check_out_date: departureDate,

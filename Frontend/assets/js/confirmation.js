@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
+              "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
             },
             body: JSON.stringify({
               reservation_id: reservationId,

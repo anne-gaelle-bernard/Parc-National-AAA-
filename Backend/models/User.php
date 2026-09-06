@@ -16,7 +16,7 @@ class User {
     }
 
     function create() {
-        $query = "INSERT INTO " . $this->table_name . " SET first_name=:first_name, last_name=:last_name, email=:email, password_hash=:password_hash";
+        $query = "INSERT INTO " . $this->table_name . " SET first_name=:first_name, last_name=:last_name, email=:email, password_hash=:password_hash, role=:role";
 
         $stmt = $this->conn->prepare($query);
 
@@ -24,11 +24,13 @@ class User {
         $this->last_name = htmlspecialchars(strip_tags($this->last_name));
         $this->email = htmlspecialchars(strip_tags($this->email));
         $this->password_hash = htmlspecialchars(strip_tags($this->password_hash));
+        $this->role = $this->role ?: 'visitor';
 
         $stmt->bindParam(":first_name", $this->first_name);
         $stmt->bindParam(":last_name", $this->last_name);
         $stmt->bindParam(":email", $this->email);
         $stmt->bindParam(":password_hash", $this->password_hash);
+        $stmt->bindParam(":role", $this->role);
 
         if($stmt->execute()) {
             return true;

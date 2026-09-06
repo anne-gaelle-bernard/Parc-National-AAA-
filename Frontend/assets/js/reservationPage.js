@@ -187,20 +187,9 @@ export function setupReservationPageLogic(container) {
         return;
       }
 
-      // Récupérer l'utilisateur connecté depuis la session
-      let userId = null;
-      try {
-        const sessionRes = await fetch('/Parc-National-AAA-/Backend/api/check-session.php');
-        const session = await sessionRes.json();
-        if (sessionRes.ok && session.loggedIn && session.user && session.user.id) {
-          userId = session.user.id;
-        } else {
-          showToast("Veuillez vous connecter pour effectuer une réservation.", "error");
-          return;
-        }
-      } catch (err) {
-        console.error('Erreur lors de la vérification de session:', err);
-        showToast("Impossible de vérifier votre session. Réessayez.", "error");
+      const authToken = localStorage.getItem("authToken");
+      if (!authToken) {
+        showToast("Veuillez vous connecter pour effectuer une réservation.", "error");
         return;
       }
 
@@ -209,9 +198,9 @@ export function setupReservationPageLogic(container) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${authToken}`,
           },
           body: JSON.stringify({
-            user_id: userId,
             campsite_id: campsiteId,
             check_in_date: checkInDate,
             check_out_date: checkOutDate,

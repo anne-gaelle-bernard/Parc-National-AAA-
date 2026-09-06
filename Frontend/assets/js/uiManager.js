@@ -142,6 +142,9 @@ export const setupUIManager = (mainContent) => {
 
         if (response.ok && result.status === 'success') {
           isLoggedIn = true;
+          if (result.token) {
+            localStorage.setItem('authToken', result.token);
+          }
           toggleHidden(modalLogin);
           showToast("Connexion réussie !", "success");
           // Ouvrir l'overlay utilisateur et s'assurer que les options principales sont visibles
@@ -218,6 +221,7 @@ export const setupUIManager = (mainContent) => {
 
         if (response.ok && result.status === 'success') {
           isLoggedIn = false;
+          localStorage.removeItem('authToken');
           toggleHidden(userOverlay);
           showToast("Vous avez été déconnecté.", "info");
           // S'assurer que les options principales sont visibles et le profil masqué lors de la déconnexion

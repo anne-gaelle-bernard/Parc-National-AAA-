@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../../config/db.php';
 require_once __DIR__ . '/../../models/User.php';
+require_once __DIR__ . '/../middlewares/JwtMiddleware.php';
 
 class UserController {
     private $conn;
@@ -60,7 +61,13 @@ class UserController {
             $_SESSION['user_last_name'] = $this->user->last_name;
             $_SESSION['user_email'] = $this->user->email;
 
-            return ["status" => "success", "message" => "Connexion réussie.", "user" => [
+            $token = JwtMiddleware::generateToken([
+                "sub" => $this->user->id,
+                "email" => $this->user->email,
+                "role" => $this->user->role
+            ]);
+
+            return ["status" => "success", "message" => "Connexion réussie.", "token" => $token, "user" => [
                 "id" => $this->user->id,
                 "first_name" => $this->user->first_name,
                 "last_name" => $this->user->last_name,
