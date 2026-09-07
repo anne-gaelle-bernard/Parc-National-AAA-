@@ -71,13 +71,22 @@ class JwtMiddleware {
     /**
      * Authenticates the current request. Sends a 401 JSON response and
      * exits if there is no valid token. Returns the token payload otherwise.
+     *
+     * Pass $requiredRole to also enforce that the token's role claim
+     * matches (sends 403 and exits if it doesn't).
      */
-    public static function authenticate() {
+    public static function authenticate(?string $requiredRole = null) {
         $payload = self::validateToken(self::bearerToken());
 
         if (!$payload) {
             http_response_code(401);
             echo json_encode(["message" => "Non autorisé. Token invalide ou manquant."]);
+            exit();
+        }
+
+        if ($requiredRole !== null && ($payload['role'] ?? null) !== $requiredRole) {
+            http_response_code(403);
+            echo json_encode(["message" => "Accès refusé. Droits insuffisants."]);
             exit();
         }
 

@@ -50,8 +50,19 @@ composer install
 vendor/bin/phpunit
 ```
 
+## API
+
+- `Backend/api/login.php`, `register.php`, `logout.php`, `check-session.php`, `update-profile.php`, `change-password.php` — utilisateurs
+- `Backend/api/get-campings.php`, `get-camping-details.php`, `reservations.php` — campings & réservations (JWT requis pour réserver/annuler/consulter ses réservations)
+- `Backend/api/trails.php` — sentiers + points d'intérêt (lecture publique, écriture réservée au rôle `admin`)
+- `Backend/api/resources.php` — ressources naturelles (faune/flore) et rapport d'observations (lecture publique, écriture réservée au rôle `admin`)
+
+La carte interactive (`map.html`) charge désormais les sentiers et ressources naturelles depuis ces API au lieu de données codées en dur.
+
 ## État du projet
 
 - ✅ Utilisateurs (inscription/connexion, JWT, session)
 - ✅ Campings & réservations (avec vérification de disponibilité et de capacité)
-- 🚧 Sentiers, ressources naturelles, notifications : modèles/contrôleurs présents mais non branchés sur des routes API (`Backend/src/routes/*.php` sont des stubs à compléter)
+- ✅ Sentiers & points d'intérêt (CRUD + affichage carte)
+- ✅ Ressources naturelles (CRUD + rapport d'observations + affichage carte)
+- 🚧 Visiteurs (abonnements/cartes de membre) et notifications : modèles/contrôleurs encore à implémenter (`Backend/models/Visitor.php`, `Backend/src/routes/*.php` sont des stubs)
