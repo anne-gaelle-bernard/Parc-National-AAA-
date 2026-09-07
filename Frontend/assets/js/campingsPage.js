@@ -1,4 +1,5 @@
 // import { showToast } from './main.js'; // Importez showToast si nécessaire
+import { API_BASE_URL } from './config.js';
 
 export const createCampingsListPage = () => {
     const container = document.createElement('div');
@@ -10,7 +11,7 @@ export const createCampingsListPage = () => {
     const dynamicCampingsListContainer = container.querySelector('#campings-list-dynamic');
 
     // Fetch campings from backend
-    fetch('/Parc-National-AAA-/Backend/api/get-campings.php')
+    fetch(`${API_BASE_URL}/get-campings.php`)
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success' && data.campings) {

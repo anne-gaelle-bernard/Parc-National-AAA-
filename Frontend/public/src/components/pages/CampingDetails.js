@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '../../../assets/js/config.js';
 import { showToast } from '../../../assets/js/uiManager.js';
 
 const getCampingImageUrl = (campingName) => {
@@ -20,7 +21,7 @@ export class CampingDetailsPage {
 
     async fetchCampingDetails() {
         try {
-            const response = await fetch(`http://localhost/Parc-National-AAA-/Backend/api/campings.php?id=${this.campingId}`);
+            const response = await fetch(`${API_BASE_URL}/campings.php?id=${this.campingId}`);
             const data = await response.json();
             if (response.ok) {
                 this.campingData = data;
@@ -68,7 +69,7 @@ export class CampingDetailsPage {
                 <button id="back-to-campings-list">Retour à la liste des campings</button>
                 <h2>${name}</h2>
                 <p>${description}</p>
-                ${imageUrl ? `<img src="/Parc-National-AAA-/${imageUrl}" alt="Image de ${name}" class="camping-detail-image"/>` : ''} <!-- Added image display -->
+                ${imageUrl ? `<img src="/${imageUrl}" alt="Image de ${name}" class="camping-detail-image"/>` : ''} <!-- Added image display -->
                 <h3>Emplacements disponibles:</h3>
                 <div class="campsites-list">
                     ${campsitesHtml}
@@ -92,7 +93,7 @@ export class CampingDetailsPage {
         });
 
         document.getElementById('reserve-camping-button').addEventListener('click', () => {
-            window.location.href = `/Parc-National-AAA-/Frontend/reservation.html?camping_id=${this.campingId}&camping_name=${encodeURIComponent(name)}`;
+            window.location.href = `/Frontend/reservation.html?camping_id=${this.campingId}&camping_name=${encodeURIComponent(name)}`;
         });
     }
 }

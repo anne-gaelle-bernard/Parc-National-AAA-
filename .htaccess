@@ -1,6 +1,6 @@
 RewriteEngine On
-RewriteBase /Parc-National-AAA-/
+RewriteBase /
 RewriteRule ^index\.html$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /Parc-National-AAA-/index.html [L]
+RewriteRule . /index.html [L]

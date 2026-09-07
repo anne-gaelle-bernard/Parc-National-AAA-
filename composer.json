@@ -1,0 +1,10 @@
+{
+    "name": "parc-national-aaa/frontend",
+    "description": "Static Frontend for Parc National AAA, served via PHP's built-in server (router.php) so Railway/Nixpacks provisions a PHP runtime.",
+    "type": "project",
+    "require": {
+        "php": ">=7.4"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

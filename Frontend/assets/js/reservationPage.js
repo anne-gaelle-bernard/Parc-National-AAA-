@@ -1,3 +1,4 @@
+import { API_BASE_URL } from './config.js';
 import { createConfirmationPage, setupConfirmationPageLogic } from './confirmationPage.js';
 import { campingService } from '../../services/campingService.js';
 import { showToast } from './uiManager.js'; // Importation corrigée
@@ -40,9 +41,9 @@ export function createReservationPage() {
   // header.className = 'header';
   // header.innerHTML = `
   //   <div class="header-icons">
-  //     <img src="/Parc-National-AAA-/Frontend/assets/img/user-icon.png" alt="Profil" id="btn-login" />
-  //     <img src="/Parc-National-AAA-/Frontend/assets/img/logo.png" alt="Logo Calanques Réservation" class="logo" />
-  //     <img src="/Parc-National-AAA-/Frontend/assets/img/burger-icon.png" alt="Menu" id="btn-menu" />
+  //     <img src="/Frontend/assets/img/user-icon.png" alt="Profil" id="btn-login" />
+  //     <img src="/Frontend/assets/img/logo.png" alt="Logo Calanques Réservation" class="logo" />
+  //     <img src="/Frontend/assets/img/burger-icon.png" alt="Menu" id="btn-menu" />
   //   </div>
   // `;
 
@@ -194,7 +195,7 @@ export function setupReservationPageLogic(container) {
       }
 
       try {
-        const response = await fetch("/Parc-National-AAA-/Backend/api/reservations.php", {
+        const response = await fetch(`${API_BASE_URL}/reservations.php`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -213,7 +214,7 @@ export function setupReservationPageLogic(container) {
 
         if (response.ok && result.status === 'success') {
           showToast("Réservation créée avec succès !", "success");
-          const basePath = '/Parc-National-AAA-'; // Assurez-vous que cela correspond au basePath dans main.js
+          const basePath = ''; // Assurez-vous que cela correspond au basePath dans main.js
           const confirmationUrl = `${basePath}/confirmation`; // Utiliser le chemin défini dans le routeur
 
           history.pushState(

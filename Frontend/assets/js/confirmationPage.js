@@ -20,9 +20,9 @@ export function createConfirmationPage(reservationDetails) {
   // header.className = 'header';
   // header.innerHTML = `
   //   <div class="header-icons">
-  //     <img src="/Parc-National-AAA-/Frontend/assets/img/user-icon.png" alt="Profil" id="btn-login" />
-  //     <img src="/Parc-National-AAA-/Frontend/assets/img/logo.png" alt="Logo Calanques Réservation" class="logo" />
-  //     <img src="/Parc-National-AAA-/Frontend/assets/img/burger-icon.png" alt="Menu" id="btn-menu" />
+  //     <img src="/Frontend/assets/img/user-icon.png" alt="Profil" id="btn-login" />
+  //     <img src="/Frontend/assets/img/logo.png" alt="Logo Calanques Réservation" class="logo" />
+  //     <img src="/Frontend/assets/img/burger-icon.png" alt="Menu" id="btn-menu" />
   //   </div>
   // `;
 

@@ -1,3 +1,4 @@
+import { API_BASE_URL } from './config.js';
 export const showToast = (message, type = "info") => {
   const toast = document.createElement("div");
   toast.className = `toast toast-${type} p-3 rounded shadow-lg text-white`;
@@ -130,7 +131,7 @@ export const setupUIManager = (mainContent) => {
       const password = loginPassword.value;
 
       try {
-        const response = await fetch('/Parc-National-AAA-/Backend/api/login.php', {
+        const response = await fetch(`${API_BASE_URL}/login.php`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -181,7 +182,7 @@ export const setupUIManager = (mainContent) => {
       const password = registerPassword.value;
 
       try {
-        const response = await fetch('/Parc-National-AAA-/Backend/api/register.php', {
+        const response = await fetch(`${API_BASE_URL}/register.php`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -216,7 +217,7 @@ export const setupUIManager = (mainContent) => {
   if (btnLogout) {
     btnLogout.addEventListener("click", async () => {
       try {
-        const response = await fetch('/Parc-National-AAA-/Backend/api/logout.php');
+        const response = await fetch(`${API_BASE_URL}/logout.php`);
         const result = await response.json();
 
         if (response.ok && result.status === 'success') {
@@ -296,7 +297,7 @@ export const setupUIManager = (mainContent) => {
         btnLogout.classList.add("hidden");
 
         try {
-          const response = await fetch('/Parc-National-AAA-/Backend/api/check-session.php');
+          const response = await fetch(`${API_BASE_URL}/check-session.php`);
           const result = await response.json();
 
           if (result.loggedIn && result.user) {
@@ -380,7 +381,7 @@ export const setupUIManager = (mainContent) => {
                 }
 
                 try {
-                  const response = await fetch('/Parc-National-AAA-/Backend/api/change-password.php', {
+                  const response = await fetch(`${API_BASE_URL}/change-password.php`, {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',
@@ -450,7 +451,7 @@ export const setupUIManager = (mainContent) => {
   }
 
   // Check session status on page load
-  fetch('/Parc-National-AAA-/Backend/api/check-session.php')
+  fetch(`${API_BASE_URL}/check-session.php`)
     .then(response => response.json())
     .then(data => {
       isLoggedIn = data.loggedIn;

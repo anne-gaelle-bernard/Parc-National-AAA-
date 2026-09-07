@@ -8,13 +8,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cousine:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <script>
+    // If the Backend is deployed as a separate service (e.g. on Railway),
+    // set its public URL here so the frontend calls the right API.
+    // Example: window.API_BASE_URL = "https://<backend-service>.up.railway.app/api";
+  </script>
 </head>
 <body>
   <header class="header">
     <div class="header-icons">
-      <img src="/Parc-National-AAA-/Frontend/assets/img/user-icon.png" alt="Profil" id="btn-login" />
-      <img src="/Parc-National-AAA-/Frontend/assets/img/logo.png" alt="Logo Calanques Réservation" class="logo" />
-      <img src="/Parc-National-AAA-/Frontend/assets/img/burger-icon.png" alt="Menu" id="btn-menu" />
+      <img src="/Frontend/assets/img/user-icon.png" alt="Profil" id="btn-login" />
+      <img src="/Frontend/assets/img/logo.png" alt="Logo Calanques Réservation" class="logo" />
+      <img src="/Frontend/assets/img/burger-icon.png" alt="Menu" id="btn-menu" />
     </div>
   </header>
 
@@ -119,6 +124,6 @@
 
 <div id="toast-container" class="fixed top-5 right-5 z-50 space-y-2"></div>
 
-<script type="module" src="/Parc-National-AAA-/Frontend/assets/js/main.js"></script>
+<script type="module" src="/Frontend/assets/js/main.js"></script>
 </body>
 </html>

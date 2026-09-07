@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/db.php';
 
+header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 
 $database = new Database();
@@ -21,7 +22,7 @@ $stmt->execute();
 $camping = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($camping) {
-    $camping['image'] = '/Parc-National-AAA-/Frontend/assets/img/Camping de ' . strtoupper(str_replace('Camping ', '', $camping['name'])) . '.jpg';
+    $camping['image'] = '/Frontend/assets/img/Camping de ' . strtoupper(str_replace('Camping ', '', $camping['name'])) . '.jpg';
 
     // Fetch campsites for this camping
     $campsitesQuery = "SELECT id, number, max_capacity, price_per_night FROM campsite WHERE camping_id = :camping_id";

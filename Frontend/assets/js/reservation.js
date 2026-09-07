@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
       campingNameDisplay.textContent = `Réserver pour: ${decodeURIComponent(campingName)}`;
     } else {
       // Fallback: if name not in URL, fetch it
-      fetch(`/Parc-National-AAA-/Backend/api/campings.php?id=${campingId}`)
+      fetch(`/Backend/api/campings.php?id=${campingId}`)
         .then(response => response.json())
         .then(data => {
           if (data.camping_name) {
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
   departureDateInput.addEventListener("change", calculateTotalPrice)
 
   backToHomeButton.addEventListener("click", () => {
-    window.location.href = "/Parc-National-AAA-/index.html";
+    window.location.href = "/index.html";
   })
 
   reservationForm.addEventListener("submit", async (e) => {
@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const response = await fetch("/Parc-National-AAA-/Backend/api/reservations.php", {
+      const response = await fetch("/Backend/api/reservations.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (response.ok) {
         // Redirection vers la page de confirmation avec les détails de la réservation
-        const confirmationUrl = `/Parc-National-AAA-/Frontend/confirmation.html?` +
+        const confirmationUrl = `/Frontend/confirmation.html?` +
           `reservation_id=${result.reservation_ids[0]}&` + // Supposons qu'on affiche le premier ID de réservation pour l'instant
           `total_price=${totalPrice}&` +
           `camping_name=${encodeURIComponent(campingName || "Camping inconnu")}&` +

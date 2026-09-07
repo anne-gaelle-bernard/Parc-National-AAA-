@@ -1,8 +1,9 @@
 // import { showToast } from './main.js'; // Importez showToast si nécessaire
+import { API_BASE_URL } from './config.js';
 
 export const createCampingDetailsPage = (campingId) => {
     // Fetch camping details from backend
-    fetch(`/Parc-National-AAA-/Backend/api/get-camping-details.php?id=${campingId}`)
+    fetch(`${API_BASE_URL}/get-camping-details.php?id=${campingId}`)
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success' && data.camping) {

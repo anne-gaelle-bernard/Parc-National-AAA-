@@ -1,3 +1,4 @@
+import { API_BASE_URL } from './config.js';
 export const createUserReservationsPage = () => {
     const container = document.createElement('div');
     container.id = 'user-reservations-page';
@@ -79,7 +80,7 @@ export const setupUserReservationsPageLogic = (container) => {
                 const confirmed = window.confirm('Confirmer l\'annulation de cette réservation ?');
                 if (!confirmed) return;
                 try {
-                    const response = await fetch('/Parc-National-AAA-/Backend/api/reservations.php', {
+                    const response = await fetch(`${API_BASE_URL}/reservations.php`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json',
@@ -114,7 +115,7 @@ export const setupUserReservationsPageLogic = (container) => {
                 return;
             }
 
-            const res = await fetch('/Parc-National-AAA-/Backend/api/reservations.php', {
+            const res = await fetch(`${API_BASE_URL}/reservations.php`, {
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });
             if (!res.ok) {

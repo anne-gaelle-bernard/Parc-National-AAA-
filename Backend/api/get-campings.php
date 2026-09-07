@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/db.php';
 
+header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 
 $database = new Database();
@@ -12,7 +13,7 @@ $stmt->execute();
 
 $campings = [];
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    $row['image'] = '/Parc-National-AAA-/Frontend/assets/img/Camping de ' . strtoupper(str_replace('Camping ', '', $row['name'])) . '.jpg';
+    $row['image'] = '/Frontend/assets/img/Camping de ' . strtoupper(str_replace('Camping ', '', $row['name'])) . '.jpg';
     $campings[] = $row;
 }
 
