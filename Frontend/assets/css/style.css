@@ -155,24 +155,6 @@ body {
   margin-bottom: 1rem;
 }
 
-#user-overlay button,
-#burger-overlay button {
-  padding: 1rem;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-}
-
-#user-overlay button {
-  background-color: #0066cc;
-  color: white;
-}
-
-#user-overlay button:hover {
-  background-color: #004f99;
-}
-
 .btn-close-overlay {
   align-self: flex-end;
   font-size: 1.5rem;
@@ -183,7 +165,8 @@ body {
 
 
 .burger-menu a,
-.burger-menu button {
+.burger-menu button,
+#user-overlay > button {
   display: block;
   width: 100%;
   padding: 1rem;
@@ -200,7 +183,8 @@ body {
 }
 
 .burger-menu a:hover,
-.burger-menu button:hover {
+.burger-menu button:hover,
+#user-overlay > button:hover {
   background-color: #f0f0f0;
 }
 
