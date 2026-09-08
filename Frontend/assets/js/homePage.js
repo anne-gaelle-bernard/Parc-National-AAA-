@@ -19,9 +19,8 @@ export const createHomePage = () => {
                 // Ouvrir la carte Leaflet (page autonome)
                 window.location.href = '/map.html';
             } else if (index === 1) {
-                // Désactiver la redirection de la carte 'Réserver' pour n'utiliser que le lien du menu burger
-                // history.pushState({ page: 'campings' }, '', '/campings');
-                // window.dispatchEvent(new Event('popstate'));
+                history.pushState({ page: 'campings' }, '', '/campings');
+                window.dispatchEvent(new Event('popstate'));
             }
         });
     });

@@ -44,6 +44,8 @@ export const setupUIManager = (mainContent) => {
   const closeBurgerOverlay = document.getElementById("close-burger-overlay");
   const btnShowCampings = document.getElementById("btn-show-campings");
   const btnReserveCampings = document.getElementById("btn-reserve-campings");
+  const btnShowTrails = document.getElementById("btn-show-trails");
+  const btnShowResources = document.getElementById("btn-show-resources");
 
   let isLoggedIn = false;
 
@@ -249,6 +251,24 @@ export const setupUIManager = (mainContent) => {
 
   if (closeBurgerOverlay) {
     closeBurgerOverlay.addEventListener("click", () => {
+      toggleHidden(burgerOverlay);
+    });
+  }
+
+  if (btnShowTrails) {
+    btnShowTrails.addEventListener("click", (e) => {
+      e.preventDefault();
+      history.pushState({ page: 'sentiers' }, '', '/sentiers');
+      window.dispatchEvent(new Event('popstate'));
+      toggleHidden(burgerOverlay);
+    });
+  }
+
+  if (btnShowResources) {
+    btnShowResources.addEventListener("click", (e) => {
+      e.preventDefault();
+      history.pushState({ page: 'ressources-naturelles' }, '', '/ressources-naturelles');
+      window.dispatchEvent(new Event('popstate'));
       toggleHidden(burgerOverlay);
     });
   }
