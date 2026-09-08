@@ -5,6 +5,8 @@ import { createHomePage, setupHomePageLogic } from './homePage.js';
 import { createCampingsListPage, setupCampingsListPageLogic } from './campingsPage.js';
 import { createCampingDetailsPage, setupCampingDetailsPageLogic } from './campingDetailsPage.js';
 import { createUserReservationsPage, setupUserReservationsPageLogic } from './userReservationsPage.js';
+import { createTrailsPage, setupTrailsPageLogic } from './trailsPage.js';
+import { createResourcesPage, setupResourcesPageLogic } from './resourcesPage.js';
 import { setupUIManager } from './uiManager.js';
 
 const init = () => {
@@ -32,6 +34,12 @@ const init = () => {
     if (path === '/campings') {
         pageContent = createCampingsListPage();
         pageLogicSetup = setupCampingsListPageLogic;
+    } else if (path === '/sentiers') {
+        pageContent = createTrailsPage();
+        pageLogicSetup = setupTrailsPageLogic;
+    } else if (path === '/ressources-naturelles') {
+        pageContent = createResourcesPage();
+        pageLogicSetup = setupResourcesPageLogic;
     } else if (path.startsWith('/reservation')) {
       pageContent = createReservationPage();
       pageLogicSetup = setupReservationPageLogic;
