@@ -75,6 +75,16 @@ class JwtMiddleware {
      * Pass $requiredRole to also enforce that the token's role claim
      * matches (sends 403 and exits if it doesn't).
      */
+    /**
+     * Like authenticate(), but never sends a 401/exits: returns the token
+     * payload if present and valid, or null otherwise. For endpoints where
+     * "not logged in" is a normal response, not an error (e.g. session
+     * checks on page load).
+     */
+    public static function optionalAuthenticate() {
+        return self::validateToken(self::bearerToken());
+    }
+
     public static function authenticate(?string $requiredRole = null) {
         $payload = self::validateToken(self::bearerToken());
 

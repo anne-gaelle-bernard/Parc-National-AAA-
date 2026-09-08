@@ -16,8 +16,11 @@ RUN { \
     echo '<Directory /var/www/html>'; \
     echo '    AllowOverride All'; \
     echo '    Require all granted'; \
+    echo '    CGIPassAuth On'; \
+    echo '    SetEnvIf Authorization "(.+)" HTTP_AUTHORIZATION=$1'; \
     echo '</Directory>'; \
     } > /etc/apache2/conf-available/allow-override.conf \
-    && a2enconf allow-override
+    && a2enconf allow-override \
+    && a2enmod setenvif
 
 EXPOSE 80

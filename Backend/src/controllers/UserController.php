@@ -54,13 +54,6 @@ class UserController {
         }
 
         if ($this->user->verifyPassword($data->password)) {
-            // Start session and set user data
-            session_start();
-            $_SESSION['user_id'] = $this->user->id;
-            $_SESSION['user_first_name'] = $this->user->first_name;
-            $_SESSION['user_last_name'] = $this->user->last_name;
-            $_SESSION['user_email'] = $this->user->email;
-
             $token = JwtMiddleware::generateToken([
                 "sub" => $this->user->id,
                 "email" => $this->user->email,

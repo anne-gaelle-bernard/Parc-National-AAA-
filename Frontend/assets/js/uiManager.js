@@ -35,7 +35,6 @@ export const setupUIManager = (mainContent) => {
   const btnShowMyProfile = document.getElementById("btn-show-my-profile");
   const profileDetailsContainer = document.getElementById("profile-details-container");
   const userOverlayTitle = document.getElementById("user-overlay-title");
-  const btnBackToUserOverlay = document.getElementById("btn-back-to-user-overlay");
 
 
   const btnMenu = document.getElementById("btn-menu");
@@ -306,6 +305,19 @@ export const setupUIManager = (mainContent) => {
     });
   }
 
+  const authHeaders = () => {
+    const token = localStorage.getItem('authToken');
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
+  };
+
+  const showMainMenu = () => {
+    profileDetailsContainer.classList.add("hidden");
+    userOverlayTitle.classList.remove("hidden");
+    btnShowMyProfile.classList.remove("hidden");
+    btnShowUserReservations.classList.remove("hidden");
+    btnLogout.classList.remove("hidden");
+  };
+
   if (btnShowMyProfile) {
     btnShowMyProfile.addEventListener("click", async () => {
       if (profileDetailsContainer.classList.contains("hidden")) {
@@ -316,66 +328,159 @@ export const setupUIManager = (mainContent) => {
         btnLogout.classList.add("hidden");
 
         try {
-          const response = await fetch('/Parc-National-AAA-/Backend/api/check-session.php');
+          const response = await fetch('/Parc-National-AAA-/Backend/api/check-session.php', {
+            headers: authHeaders(),
+          });
           const result = await response.json();
 
           if (result.loggedIn && result.user) {
+            let user = result.user;
+
             profileDetailsContainer.innerHTML = `
-              <p><strong>Prénom:</strong> ${result.user.first_name}</p>
-              <p><strong>Nom:</strong> ${result.user.last_name}</p>
-              <p><strong>Email:</strong> ${result.user.email}</p>
-              <button id="btn-change-password" class="btn btn-secondary mt-3">Changer le mot de passe</button>
+              <div id="profile-view">
+                <p><strong>Prénom:</strong> <span id="profile-first-name"></span></p>
+                <p><strong>Nom:</strong> <span id="profile-last-name"></span></p>
+                <p><strong>Email:</strong> <span id="profile-email"></span></p>
+                <button id="btn-edit-profile" class="btn btn-secondary mt-3">Modifier le profil</button>
+                <button id="btn-change-password" class="btn btn-secondary mt-3">Changer le mot de passe</button>
+                <button id="btn-back-to-user-overlay" class="button-link back-button">Retour à l'accueil</button>
+              </div>
+              <form id="edit-profile-form" class="hidden">
+                <div class="mb-3">
+                  <label for="edit-first-name" class="form-label">Prénom</label>
+                  <input type="text" class="form-control" id="edit-first-name" required>
+                </div>
+                <div class="mb-3">
+                  <label for="edit-last-name" class="form-label">Nom</label>
+                  <input type="text" class="form-control" id="edit-last-name" required>
+                </div>
+                <div class="mb-3">
+                  <label for="edit-email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="edit-email" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                <button type="button" id="btn-cancel-edit-profile" class="btn btn-secondary mt-2">Annuler</button>
+                <p id="edit-profile-message" class="text-danger mt-2"></p>
+              </form>
+              <div id="change-password-form-container" class="hidden">
+                <h3>Changer votre mot de passe</h3>
+                <form id="change-password-form">
+                  <div class="mb-3">
+                    <label for="current-password" class="form-label">Mot de passe actuel</label>
+                    <input type="password" class="form-control" id="current-password" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="new-password" class="form-label">Nouveau mot de passe</label>
+                    <input type="password" class="form-control" id="new-password" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="confirm-new-password" class="form-label">Confirmer le nouveau mot de passe</label>
+                    <input type="password" class="form-control" id="confirm-new-password" required>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Changer le mot de passe</button>
+                  <button type="button" id="btn-cancel-change-password" class="btn btn-secondary mt-2">Annuler</button>
+                  <p id="change-password-message" class="text-danger mt-2"></p>
+                </form>
+              </div>
             `;
             profileDetailsContainer.classList.remove("hidden"); // Afficher les détails du profil
 
-            // Ajouter le formulaire de changement de mot de passe (initiallement caché)
-            const changePasswordFormContainer = document.createElement('div');
-            changePasswordFormContainer.id = 'change-password-form-container';
-            changePasswordFormContainer.classList.add('hidden'); // Masqué par défaut
-            changePasswordFormContainer.innerHTML = `
-              <h3>Changer votre mot de passe</h3>
-              <form id="change-password-form">
-                <div class="mb-3">
-                  <label for="current-password" class="form-label">Mot de passe actuel</label>
-                  <input type="password" class="form-control" id="current-password" required>
-                </div>
-                <div class="mb-3">
-                  <label for="new-password" class="form-label">Nouveau mot de passe</label>
-                  <input type="password" class="form-control" id="new-password" required>
-                </div>
-                <div class="mb-3">
-                  <label for="confirm-new-password" class="form-label">Confirmer le nouveau mot de passe</label>
-                  <input type="password" class="form-control" id="confirm-new-password" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Changer le mot de passe</button>
-                <button type="button" id="btn-cancel-change-password" class="btn btn-secondary mt-2">Annuler</button>
-                <p id="change-password-message" class="text-danger mt-2"></p>
-              </form>
-            `;
-            profileDetailsContainer.appendChild(changePasswordFormContainer);
+            const profileView = document.getElementById("profile-view");
+            const profileFirstName = document.getElementById("profile-first-name");
+            const profileLastName = document.getElementById("profile-last-name");
+            const profileEmail = document.getElementById("profile-email");
 
+            const renderUser = () => {
+              profileFirstName.textContent = user.first_name;
+              profileLastName.textContent = user.last_name;
+              profileEmail.textContent = user.email;
+            };
+
+            const btnBackToUserOverlay = document.getElementById("btn-back-to-user-overlay");
+            if (btnBackToUserOverlay) {
+              btnBackToUserOverlay.addEventListener("click", showMainMenu);
+            }
+            renderUser();
+
+            const btnEditProfile = document.getElementById("btn-edit-profile");
             const btnChangePassword = document.getElementById("btn-change-password");
+            const editProfileForm = document.getElementById("edit-profile-form");
+            const editProfileMessage = document.getElementById("edit-profile-message");
+            const btnCancelEditProfile = document.getElementById("btn-cancel-edit-profile");
+
+            const changePasswordFormContainer = document.getElementById("change-password-form-container");
             const btnCancelChangePassword = document.getElementById("btn-cancel-change-password");
             const changePasswordForm = document.getElementById("change-password-form");
             const changePasswordMessage = document.getElementById("change-password-message");
 
+            if (btnEditProfile) {
+              btnEditProfile.addEventListener("click", () => {
+                document.getElementById("edit-first-name").value = user.first_name;
+                document.getElementById("edit-last-name").value = user.last_name;
+                document.getElementById("edit-email").value = user.email;
+                editProfileMessage.textContent = '';
+                profileView.classList.add('hidden');
+                editProfileForm.classList.remove('hidden');
+              });
+            }
+
+            if (btnCancelEditProfile) {
+              btnCancelEditProfile.addEventListener("click", () => {
+                editProfileForm.classList.add('hidden');
+                profileView.classList.remove('hidden');
+              });
+            }
+
+            if (editProfileForm) {
+              editProfileForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                editProfileMessage.textContent = '';
+
+                const firstName = document.getElementById("edit-first-name").value;
+                const lastName = document.getElementById("edit-last-name").value;
+                const email = document.getElementById("edit-email").value;
+
+                try {
+                  const response = await fetch('/Parc-National-AAA-/Backend/api/update-profile.php', {
+                    method: 'PUT',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      ...authHeaders(),
+                    },
+                    body: JSON.stringify({ first_name: firstName, last_name: lastName, email }),
+                  });
+
+                  const result = await response.json();
+
+                  if (response.ok && result.status === 'success') {
+                    user = result.user || { ...user, first_name: firstName, last_name: lastName, email };
+                    renderUser();
+                    showToast("Profil mis à jour avec succès !", "success");
+                    editProfileForm.classList.add('hidden');
+                    profileView.classList.remove('hidden');
+                  } else {
+                    editProfileMessage.textContent = result.message || "Erreur lors de la mise à jour du profil.";
+                    showToast(result.message || "Échec de la mise à jour du profil.", "error");
+                  }
+                } catch (error) {
+                  console.error("Error updating profile:", error);
+                  editProfileMessage.textContent = "Une erreur est survenue lors de la mise à jour du profil.";
+                  showToast("Une erreur est survenue. Veuillez réessayer.", "error");
+                }
+              });
+            }
+
             if (btnChangePassword) {
               btnChangePassword.addEventListener("click", () => {
-                toggleHidden(profileDetailsContainer.querySelector('p:nth-of-type(1)'));
-                toggleHidden(profileDetailsContainer.querySelector('p:nth-of-type(2)'));
-                toggleHidden(profileDetailsContainer.querySelector('p:nth-of-type(3)'));
-                toggleHidden(btnChangePassword);
+                profileView.classList.add('hidden');
                 changePasswordFormContainer.classList.remove('hidden');
               });
             }
 
             if (btnCancelChangePassword) {
               btnCancelChangePassword.addEventListener("click", () => {
-                toggleHidden(profileDetailsContainer.querySelector('p:nth-of-type(1)'));
-                toggleHidden(profileDetailsContainer.querySelector('p:nth-of-type(2)'));
-                toggleHidden(profileDetailsContainer.querySelector('p:nth-of-type(3)'));
-                toggleHidden(btnChangePassword);
                 changePasswordFormContainer.classList.add('hidden');
+                profileView.classList.remove('hidden');
                 changePasswordForm.reset(); // Réinitialiser le formulaire
                 changePasswordMessage.textContent = ''; // Effacer les messages
               });
@@ -404,6 +509,7 @@ export const setupUIManager = (mainContent) => {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',
+                      ...authHeaders(),
                     },
                     body: JSON.stringify({ current_password: currentPassword, new_password: newPassword }),
                   });
@@ -414,11 +520,8 @@ export const setupUIManager = (mainContent) => {
                     showToast("Mot de passe changé avec succès !", "success");
                     changePasswordForm.reset();
                     // Revenir à l'affichage des détails du profil après succès
-                    toggleHidden(profileDetailsContainer.querySelector('p:nth-of-type(1)'));
-                    toggleHidden(profileDetailsContainer.querySelector('p:nth-of-type(2)'));
-                    toggleHidden(profileDetailsContainer.querySelector('p:nth-of-type(3)'));
-                    toggleHidden(btnChangePassword);
                     changePasswordFormContainer.classList.add('hidden');
+                    profileView.classList.remove('hidden');
                   } else {
                     changePasswordMessage.textContent = result.message || "Erreur lors du changement de mot de passe.";
                     showToast(result.message || "Échec du changement de mot de passe.", "error");
@@ -433,44 +536,22 @@ export const setupUIManager = (mainContent) => {
 
           } else {
             showToast("Impossible de récupérer les informations de profil. Veuillez vous reconnecter.", "error");
-            // En cas d'erreur, réafficher le menu principal
-            userOverlayTitle.classList.remove("hidden");
-            btnShowMyProfile.classList.remove("hidden");
-            btnShowUserReservations.classList.remove("hidden");
-            btnLogout.classList.remove("hidden");
+            showMainMenu();
           }
         } catch (error) {
           console.error("Error fetching profile details:", error);
           showToast("Une erreur est survenue lors de la récupération du profil.", "error");
-          // En cas d'erreur, réafficher le menu principal
-          userOverlayTitle.classList.remove("hidden");
-          btnShowMyProfile.classList.remove("hidden");
-          btnShowUserReservations.classList.remove("hidden");
-          btnLogout.classList.remove("hidden");
+          showMainMenu();
         }
       } else {
-        profileDetailsContainer.classList.add("hidden"); // Masquer les détails du profil
-        // Réafficher les éléments du menu principal
-        userOverlayTitle.classList.remove("hidden");
-        btnShowMyProfile.classList.remove("hidden");
-        btnShowUserReservations.classList.remove("hidden");
-        btnLogout.classList.remove("hidden");
+        showMainMenu();
       }
     });
   }
 
-  if (btnBackToUserOverlay) {
-    btnBackToUserOverlay.addEventListener("click", () => {
-      profileDetailsContainer.classList.add("hidden"); // Masquer les détails du profil
-      userOverlayTitle.classList.remove("hidden");
-      btnShowMyProfile.classList.remove("hidden");
-      btnShowUserReservations.classList.remove("hidden");
-      btnLogout.classList.remove("hidden");
-    });
-  }
 
   // Check session status on page load
-  fetch('/Parc-National-AAA-/Backend/api/check-session.php')
+  fetch('/Parc-National-AAA-/Backend/api/check-session.php', { headers: authHeaders() })
     .then(response => response.json())
     .then(data => {
       isLoggedIn = data.loggedIn;
