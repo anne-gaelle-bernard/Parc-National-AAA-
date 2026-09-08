@@ -1,0 +1,35 @@
+services:
+  app:
+    build:
+      context: ../..
+      dockerfile: Frontend/docker/Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      DB_HOST: db
+      DB_NAME: ${DB_NAME:-parc_national}
+      DB_USER: ${DB_USER:-parc_national}
+      DB_PASSWORD: ${DB_PASSWORD:-parc_national}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-parc_national}
+      MYSQL_USER: ${DB_USER:-parc_national}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-parc_national}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ../../parc_national.sql:/docker-entrypoint-initdb.d/parc_national.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  db_data:

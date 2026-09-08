@@ -1,3 +1,4 @@
+SET NAMES utf8mb4;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
@@ -173,4 +174,6 @@ VALUES
 INSERT INTO `user` (`id`, `email`, `password_hash`, `last_name`, `first_name`, `role`)
 VALUES
 (1, 'test@example.com', '$2y$10$wO3t4GqA3N1X5J6H7K8L9.B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2', 'Doe', 'John', 'visitor');
+
+COMMIT;
 
